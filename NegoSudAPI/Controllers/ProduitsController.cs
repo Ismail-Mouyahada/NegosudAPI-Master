@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NegoSudAPI.Data;
+using Microsoft.AspNetCore.Authorization;
 using NegoSudAPI.Models;
 
 namespace NegoSudAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProduitsController : ControllerBase

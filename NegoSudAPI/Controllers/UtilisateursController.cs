@@ -27,6 +27,7 @@ namespace NegoSudAPI.Controllers
         }
 
         // GET: api/Utilisateurs
+      
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Utilisateur>>> Getutilisateurs()
         {
@@ -38,6 +39,7 @@ namespace NegoSudAPI.Controllers
         }
 
         // GET: api/Utilisateurs/5
+ 
         [HttpGet("{id}")]
         public async Task<ActionResult<Utilisateur>> GetUtilisateur(int id)
         {
@@ -57,6 +59,7 @@ namespace NegoSudAPI.Controllers
 
         // PUT: api/Utilisateurs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+   
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUtilisateur(int id, Utilisateur utilisateur)
         {
@@ -88,6 +91,7 @@ namespace NegoSudAPI.Controllers
 
         // POST: api/Utilisateurs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<Utilisateur>> PostUtilisateur(Utilisateur utilisateur)
         {
@@ -102,9 +106,10 @@ namespace NegoSudAPI.Controllers
             return CreatedAtAction("GetUtilisateur", new { id = utilisateur.Id }, utilisateur);
         }
 
-  
+
 
         // DELETE: api/Utilisateurs/5
+      
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUtilisateur(int id)
         {
