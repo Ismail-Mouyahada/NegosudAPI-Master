@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace NegoSudAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class NewDB : Migration
+    public partial class initialmig : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -508,6 +508,11 @@ namespace NegoSudAPI.Migrations
                         principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.InsertData(
+                table: "utilisateurs",
+                columns: new[] { "Id", "DateInscription", "DateModification", "Email", "IsBusiness", "MotDePasse", "Nom", "NomUtilisateur", "Prenom", "Role", "SIREN", "Tel" },
+                values: new object[] { 1, null, null, "mouyahada@gmail.com", false, "Password", "Mouyahada", "Ismail", "Ismail", 1, "FR5664544654", null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_adresses_UtilisateurId",
