@@ -11,6 +11,7 @@ using NegoSudAPI.Auth;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
+using Microsoft.AspNetCore.Cors;
 
 namespace NegoSudAPI.Controllers
 {
@@ -27,8 +28,8 @@ namespace NegoSudAPI.Controllers
             _configuration = configuration;
 
         }
+        [EnableCors]
         [HttpPost]
-       
         public IActionResult Connexion(UtilisateurAuth  utilisateur )
         {
             if (!ModelState.IsValid)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,7 @@ using NegoSudAPI.Models;
 
 namespace NegoSudAPI.Controllers
 {
-    [Authorize]
+    // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UtilisateursController : ControllerBase
@@ -27,31 +28,31 @@ namespace NegoSudAPI.Controllers
         }
 
         // GET: api/Utilisateurs
-      
+        [EnableCors]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Utilisateur>>> Getutilisateurs()
         {
-          if (_context.utilisateurs == null)
-          {
-              return NotFound();
-          }
+            if (_context.utilisateurs == null)
+            {
+                return NotFound("Désolé, aucun Enregistrement n'a été trouvé.");
+            }
             return await _context.utilisateurs.ToListAsync();
         }
 
         // GET: api/Utilisateurs/5
- 
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Utilisateur>> GetUtilisateur(int id)
         {
-          if (_context.utilisateurs == null)
-          {
-              return NotFound();
-          }
+            if (_context.utilisateurs == null)
+            {
+                return NotFound("Désolé, aucun Enregistrement n'a été trouvé.");
+            }
             var utilisateur = await _context.utilisateurs.FindAsync(id);
 
             if (utilisateur == null)
             {
-                return NotFound();
+                return NotFound("Désolé, aucun Enregistrement n'a été trouvé.");
             }
 
             return utilisateur;
@@ -59,15 +60,15 @@ namespace NegoSudAPI.Controllers
 
         // PUT: api/Utilisateurs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-   
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUtilisateur(int id, Utilisateur utilisateur)
         {
             if (id != utilisateur.Id)
             {
-                return BadRequest();
-            }
-
+                return BadRequest("Il semblerait qu'il y a une erreur dans la requête, veuillez réessayer !");
+            } else if (utilisateur.MotDePasse == null)
+           
             _context.Entry(utilisateur).State = EntityState.Modified;
 
             try
@@ -78,7 +79,7 @@ namespace NegoSudAPI.Controllers
             {
                 if (!UtilisateurExists(id))
                 {
-                    return NotFound();
+                    return NotFound("Désolé, aucun Enregistrement n'a été trouvé.");
                 }
                 else
                 {
@@ -92,24 +93,29 @@ namespace NegoSudAPI.Controllers
         // POST: api/Utilisateurs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [AllowAnonymous]
+        [EnableCors]
         [HttpPost]
         public async Task<ActionResult<Utilisateur>> PostUtilisateur(Utilisateur utilisateur)
         {
-          if (_context.utilisateurs == null)
-          {
-              return Problem("Entity set 'NegosudDbContext.utilisateurs'  is null.");
-          }
+            // Gestion des exceptions
+            if (_context.utilisateurs == null)
+            {
+                return Problem("Desolé, l'Entité 'NegosudDbContext.utilisateurs'  est vide(nullException).");
+            } else if (utilisateur.Id < 0){
+                return Problem("Desolé l'identifiant devrait être supérieur a 0");
+            }
+
+            // Récuperations des données
             utilisateur.MotDePasse = new PasswordHash().HashedPass(utilisateur.MotDePasse);
             _context.utilisateurs.Add(utilisateur);
             await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetUtilisateur", new { id = utilisateur.Id }, utilisateur);
         }
 
 
 
         // DELETE: api/Utilisateurs/5
-      
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUtilisateur(int id)
         {

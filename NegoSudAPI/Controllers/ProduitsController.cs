@@ -8,119 +8,67 @@ using Microsoft.EntityFrameworkCore;
 using NegoSudAPI.Data;
 using Microsoft.AspNetCore.Authorization;
 using NegoSudAPI.Models;
+using Microsoft.AspNetCore.Cors;
+using NegoSudAPI.Services;
 
 namespace NegoSudAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class ProduitsController : ControllerBase
+    public class ProduitController : ControllerBase
     {
-        private readonly NegosudDbContext _context;
+        private readonly IProduitService _produitService;
 
-        public ProduitsController(NegosudDbContext context)
+        public ProduitController(IProduitService produitService)
         {
-            _context = context;
+            _produitService = produitService;
         }
 
-        // GET: api/Produits
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Produit>>> Getproduits()
+        public async Task<ActionResult<List<Produit>>> GetAllProduits()
         {
-          if (_context.produits == null)
-          {
-              return NotFound();
-          }
-            return await _context.produits.ToListAsync();
+            var result = _produitService.GetAllProduits();
+            if (result is null)
+                return NotFound("Produits est introuvable pour l'instant !");
+            return Ok(result);
         }
 
-        // GET: api/Produits/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Produit>> GetProduit(int id)
+        public async Task<ActionResult<List<Produit>>> GetProduit(int id)
         {
-          if (_context.produits == null)
-          {
-              return NotFound();
-          }
-            var produit = await _context.produits.FindAsync(id);
-
-            if (produit == null)
-            {
-                return NotFound();
-            }
-
-            return produit;
+            var result = _produitService.GetProduit(id);
+            if (result is null)
+                return NotFound("Produit est introuvable pour l'instant !");
+            return Ok(result);
         }
 
-        // PUT: api/Produits/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduit(int id, Produit produit)
-        {
-            if (id != produit.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(produit).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProduitExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Produits
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Produit>> PostProduit(Produit produit)
+        public async Task<ActionResult<List<Produit>>> AddProduit(Produit produit)
         {
-          if (_context.produits == null)
-          {
-              return Problem("Entity set 'NegosudDbContext.produits'  is null.");
-          }
-            _context.produits.Add(produit);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetProduit", new { id = produit.Id }, produit);
+            var result = _produitService.AddProduit(produit);
+            if (result is null)
+                return NotFound("Produit est introuvable pour l'instant !");
+            return Ok(result);
         }
 
-        // DELETE: api/Produits/5
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<List<Produit>>> UpdateProduit(int id, Produit request)
+        {
+            var result = _produitService.UpdateProduit(id, request);
+            if (result is null)
+                return NotFound("Produit est introuvable pour l'instant !");
+            return Ok(result);
+        }
+
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduit(int id)
+        public async Task<ActionResult<List<Produit>>> DeleteProduit(int id)
         {
-            if (_context.produits == null)
-            {
-                return NotFound();
-            }
-            var produit = await _context.produits.FindAsync(id);
-            if (produit == null)
-            {
-                return NotFound();
-            }
-
-            _context.produits.Remove(produit);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool ProduitExists(int id)
-        {
-            return (_context.produits?.Any(e => e.Id == id)).GetValueOrDefault();
+            var result = _produitService.DeleteProduit(id);
+            if (result is null)
+                return NotFound("Produit est introuvable pour l'instant !");
+            return Ok(result);
         }
     }
 }
