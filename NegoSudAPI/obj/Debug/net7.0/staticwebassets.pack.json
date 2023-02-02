@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\imouy\\Desktop\\CUBE-ASP-DON-NET\\backend\\NegosudAPI\\NegoSudAPI\\wwwroot\\uploads\\string.png",
+      "PackagePath": "staticwebassets\\uploads\\string.png"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.NegoSudAPI.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.build.NegoSudAPI.props",
+      "PackagePath": "build\\NegoSudAPI.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildMultiTargeting.NegoSudAPI.props",
+      "PackagePath": "buildMultiTargeting\\NegoSudAPI.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildTransitive.NegoSudAPI.props",
+      "PackagePath": "buildTransitive\\NegoSudAPI.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
