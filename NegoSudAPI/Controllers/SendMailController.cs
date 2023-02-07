@@ -22,13 +22,14 @@ namespace NegoSudAPI.Controllers
         [HttpPost]
         public void SendMailer(Mailer mailer)
         {
-            if (mailer is null)
+            if (mailer == null || mailer.EnvoyePar == null || mailer.Sujet== null || mailer.Corps== null || mailer.receptionneur == null  )
             {
                 throw new ArgumentNullException("mailer");
             }
-            new SendMail().SendIt(mailer.EnvoyePar, mailer.Sujet, mailer.Corps);
+            var mailing = new SendMail();
+            mailing.SendIt(mailer.EnvoyePar, mailer.Sujet, mailer.Corps, mailer.receptionneur);
 
-            Ok(mailer);
+            Ok( mailing);
         }
 
 

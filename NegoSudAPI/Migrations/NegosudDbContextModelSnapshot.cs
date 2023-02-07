@@ -589,6 +589,20 @@ namespace NegoSudAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("utilisateurs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "mouyahada@gmail.com",
+                            IsBusiness = false,
+                            MotDePasse = "Password",
+                            Nom = "Mouyahada",
+                            NomUtilisateur = "Ismail",
+                            Prenom = "Ismail",
+                            Role = 1,
+                            SIREN = "FR5664544654"
+                        });
                 });
 
             modelBuilder.Entity("NegoSudAPI.Models.Ville", b =>

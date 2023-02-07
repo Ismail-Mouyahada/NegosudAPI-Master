@@ -4,7 +4,6 @@ using NegoSudAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using NegoSudAPI.Auth;
  
-
 namespace NegoSudAPI.Services.UtilisateurService
 { public class UtilisateurService : IUtilisateurService
     {
@@ -22,6 +21,7 @@ namespace NegoSudAPI.Services.UtilisateurService
                 throw new ArgumentNullException(nameof(_context.utilisateurs), "tout est vide.");
             }
             utilisateur.MotDePasse = new PasswordHash().HashedPass(utilisateur.MotDePasse);
+ 
 
             _context.utilisateurs.Add(utilisateur);
             await _context.SaveChangesAsync();
@@ -42,8 +42,7 @@ namespace NegoSudAPI.Services.UtilisateurService
 
             return await _context.utilisateurs.ToListAsync();
         }
-
-        public   Task<List<Utilisateur>> RecupererToutUtilisateurs()
+         public   Task<List<Utilisateur>> RecupererToutUtilisateurs()
         {
             if (_context.utilisateurs == null)
             {
@@ -91,5 +90,6 @@ namespace NegoSudAPI.Services.UtilisateurService
             return await _context.utilisateurs.ToListAsync();
         }
 
+      
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using NegoSudAPI.Data;
 using NegoSudAPI.Models;
 using Microsoft.AspNetCore.Authorization;
+using NegoSudAPI.Services.InventaireService;
 
 namespace NegoSudAPI.Controllers
 {
@@ -16,111 +17,71 @@ namespace NegoSudAPI.Controllers
     [ApiController]
     public class InventairesController : ControllerBase
     {
-        private readonly NegosudDbContext _context;
+        private readonly IInventaireService _inventaireService;
 
-        public InventairesController(NegosudDbContext context)
+        public InventairesController(IInventaireService inventaireService)
         {
-            _context = context;
+            _inventaireService = inventaireService;
         }
 
         // GET: api/Inventaires
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Inventaire>>> Getinventaires()
+        public async Task<ActionResult<IEnumerable<Inventaire>>> RecupererToutInventaires()
         {
-          if (_context.inventaires == null)
-          {
-              return NotFound();
-          }
-            return await _context.inventaires.ToListAsync();
+
+            return await _inventaireService.RecupererToutInventaires();
         }
 
         // GET: api/Inventaires/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Inventaire>> GetInventaire(int id)
+        public async Task<ActionResult<Inventaire>> RecupererInventaire(int id)
         {
-          if (_context.inventaires == null)
-          {
-              return NotFound();
-          }
-            var inventaire = await _context.inventaires.FindAsync(id);
 
-            if (inventaire == null)
+            var inventaire = await _inventaireService.RecupererInventaire(id);
+
+            if (inventaire is null)
             {
-                return NotFound();
+                return NotFound("Inventaire introuvable !");
             }
 
-            return inventaire;
+            return Ok(inventaire);
         }
 
         // PUT: api/Inventaires/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutInventaire(int id, Inventaire inventaire)
+        public async Task<IActionResult> ModifierInventaire(int id, Inventaire inventaire )
         {
-            if (id != inventaire.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(inventaire).State = EntityState.Modified;
+             var result = await _inventaireService.ModifierInventaire(id, inventaire);
+            if (result is null)
+                return NotFound("Inventaire introuvable");
+            return Ok(result);
+ 
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!InventaireExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
         // POST: api/Inventaires
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Inventaire>> PostInventaire(Inventaire inventaire)
+        public async Task<ActionResult<Inventaire>> AjouterInventaire(Inventaire inventaire)
         {
-          if (_context.inventaires == null)
-          {
-              return Problem("Entity set 'NegosudDbContext.inventaires'  is null.");
-          }
-            _context.inventaires.Add(inventaire);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetInventaire", new { id = inventaire.Id }, inventaire);
+            var result = await _inventaireService.AjouterInventaire(inventaire);
+            if (result is null)
+                return NotFound("Inventaire introuvable");
+            return Ok(result);
         }
 
         // DELETE: api/Inventaires/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteInventaire(int id)
+        public async Task<IActionResult> SupprimerInventaire(int id)
         {
-            if (_context.inventaires == null)
-            {
-                return NotFound();
-            }
-            var inventaire = await _context.inventaires.FindAsync(id);
-            if (inventaire == null)
-            {
-                return NotFound();
-            }
-
-            _context.inventaires.Remove(inventaire);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+           var result = await _inventaireService.SupprimerInventaire(id);
+            if (result is null)
+                return NotFound("Inventaire introuvable");
+            return Ok(result);
         }
 
-        private bool InventaireExists(int id)
-        {
-            return (_context.inventaires?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+
     }
 }

@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NegoSudAPI.Data;
 using NegoSudAPI.Models;
+using Microsoft.AspNetCore.Authorization;
+using NegoSudAPI.Services.VilleService;
 
 namespace NegoSudAPI.Controllers
 {
@@ -16,111 +17,71 @@ namespace NegoSudAPI.Controllers
     [ApiController]
     public class VillesController : ControllerBase
     {
-        private readonly NegosudDbContext _context;
+        private readonly IVilleService _villeService;
 
-        public VillesController(NegosudDbContext context)
+        public VillesController(IVilleService villeService)
         {
-            _context = context;
+            _villeService = villeService;
         }
 
         // GET: api/Villes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Ville>>> Getvilles()
+        public async Task<ActionResult<IEnumerable<Ville>>> RecupererToutVilles()
         {
-          if (_context.villes == null)
-          {
-              return NotFound();
-          }
-            return await _context.villes.ToListAsync();
+
+            return await _villeService.RecupererToutVilles();
         }
 
         // GET: api/Villes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Ville>> GetVille(int id)
+        public async Task<ActionResult<Ville>> RecupererVille(int id)
         {
-          if (_context.villes == null)
-          {
-              return NotFound();
-          }
-            var ville = await _context.villes.FindAsync(id);
 
-            if (ville == null)
+            var ville = await _villeService.RecupererVille(id);
+
+            if (ville is null)
             {
-                return NotFound();
+                return NotFound("Ville introuvable !");
             }
 
-            return ville;
+            return Ok(ville);
         }
 
         // PUT: api/Villes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutVille(int id, Ville ville)
+        public async Task<IActionResult> ModifierVille(int id, Ville ville )
         {
-            if (id != ville.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(ville).State = EntityState.Modified;
+             var result = await _villeService.ModifierVille(id, ville);
+            if (result is null)
+                return NotFound("Ville introuvable");
+            return Ok(result);
+ 
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!VilleExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
         // POST: api/Villes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Ville>> PostVille(Ville ville)
+        public async Task<ActionResult<Ville>> AjouterVille(Ville ville)
         {
-          if (_context.villes == null)
-          {
-              return Problem("Entity set 'NegosudDbContext.villes'  is null.");
-          }
-            _context.villes.Add(ville);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetVille", new { id = ville.Id }, ville);
+            var result = await _villeService.AjouterVille(ville);
+            if (result is null)
+                return NotFound("Ville introuvable");
+            return Ok(result);
         }
 
         // DELETE: api/Villes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteVille(int id)
+        public async Task<IActionResult> SupprimerVille(int id)
         {
-            if (_context.villes == null)
-            {
-                return NotFound();
-            }
-            var ville = await _context.villes.FindAsync(id);
-            if (ville == null)
-            {
-                return NotFound();
-            }
-
-            _context.villes.Remove(ville);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+           var result = await _villeService.SupprimerVille(id);
+            if (result is null)
+                return NotFound("Ville introuvable");
+            return Ok(result);
         }
 
-        private bool VilleExists(int id)
-        {
-            return (_context.villes?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using NegoSudAPI.Data;
 using NegoSudAPI.Models;
 using Microsoft.AspNetCore.Authorization;
+using NegoSudAPI.Services.ProducteurService;
 
 namespace NegoSudAPI.Controllers
 {
@@ -16,111 +17,71 @@ namespace NegoSudAPI.Controllers
     [ApiController]
     public class ProducteursController : ControllerBase
     {
-        private readonly NegosudDbContext _context;
+        private readonly IProducteurService _producteurService;
 
-        public ProducteursController(NegosudDbContext context)
+        public ProducteursController(IProducteurService producteurService)
         {
-            _context = context;
+            _producteurService = producteurService;
         }
 
         // GET: api/Producteurs
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Producteur>>> Getproducteurs()
+        public async Task<ActionResult<IEnumerable<Producteur>>> RecupererToutProducteurs()
         {
-          if (_context.producteurs == null)
-          {
-              return NotFound();
-          }
-            return await _context.producteurs.ToListAsync();
+
+            return await _producteurService.RecupererToutProducteurs();
         }
 
         // GET: api/Producteurs/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Producteur>> GetProducteur(int id)
+        public async Task<ActionResult<Producteur>> RecupererProducteur(int id)
         {
-          if (_context.producteurs == null)
-          {
-              return NotFound();
-          }
-            var producteur = await _context.producteurs.FindAsync(id);
 
-            if (producteur == null)
+            var producteur = await _producteurService.RecupererProducteur(id);
+
+            if (producteur is null)
             {
-                return NotFound();
+                return NotFound("Producteur introuvable !");
             }
 
-            return producteur;
+            return Ok(producteur);
         }
 
         // PUT: api/Producteurs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProducteur(int id, Producteur producteur)
+        public async Task<IActionResult> ModifierProducteur(int id, Producteur producteur )
         {
-            if (id != producteur.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(producteur).State = EntityState.Modified;
+             var result = await _producteurService.ModifierProducteur(id, producteur);
+            if (result is null)
+                return NotFound("Producteur introuvable");
+            return Ok(result);
+ 
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProducteurExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
         // POST: api/Producteurs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Producteur>> PostProducteur(Producteur producteur)
+        public async Task<ActionResult<Producteur>> AjouterProducteur(Producteur producteur)
         {
-          if (_context.producteurs == null)
-          {
-              return Problem("Entity set 'NegosudDbContext.producteurs'  is null.");
-          }
-            _context.producteurs.Add(producteur);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetProducteur", new { id = producteur.Id }, producteur);
+            var result = await _producteurService.AjouterProducteur(producteur);
+            if (result is null)
+                return NotFound("Producteur introuvable");
+            return Ok(result);
         }
 
         // DELETE: api/Producteurs/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProducteur(int id)
+        public async Task<IActionResult> SupprimerProducteur(int id)
         {
-            if (_context.producteurs == null)
-            {
-                return NotFound();
-            }
-            var producteur = await _context.producteurs.FindAsync(id);
-            if (producteur == null)
-            {
-                return NotFound();
-            }
-
-            _context.producteurs.Remove(producteur);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+           var result = await _producteurService.SupprimerProducteur(id);
+            if (result is null)
+                return NotFound("Producteur introuvable");
+            return Ok(result);
         }
 
-        private bool ProducteurExists(int id)
-        {
-            return (_context.producteurs?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+
     }
 }

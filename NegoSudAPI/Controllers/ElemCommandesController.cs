@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using NegoSudAPI.Data;
 using NegoSudAPI.Models;
 using Microsoft.AspNetCore.Authorization;
+using NegoSudAPI.Services.ElemCommandeService;
 
 namespace NegoSudAPI.Controllers
 {
@@ -16,111 +17,71 @@ namespace NegoSudAPI.Controllers
     [ApiController]
     public class ElemCommandesController : ControllerBase
     {
-        private readonly NegosudDbContext _context;
+        private readonly IElemCommandeService _elemcommandeService;
 
-        public ElemCommandesController(NegosudDbContext context)
+        public ElemCommandesController(IElemCommandeService elemcommandeService)
         {
-            _context = context;
+            _elemcommandeService = elemcommandeService;
         }
 
         // GET: api/ElemCommandes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ElemCommande>>> GetelemCommandes()
+        public async Task<ActionResult<IEnumerable<ElemCommande>>> RecupererToutElemCommandes()
         {
-          if (_context.elemCommandes == null)
-          {
-              return NotFound();
-          }
-            return await _context.elemCommandes.ToListAsync();
+
+            return await _elemcommandeService.RecupererToutElemCommandes();
         }
 
         // GET: api/ElemCommandes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ElemCommande>> GetElemCommande(int id)
+        public async Task<ActionResult<ElemCommande>> RecupererElemCommande(int id)
         {
-          if (_context.elemCommandes == null)
-          {
-              return NotFound();
-          }
-            var elemCommande = await _context.elemCommandes.FindAsync(id);
 
-            if (elemCommande == null)
+            var elemcommande = await _elemcommandeService.RecupererElemCommande(id);
+
+            if (elemcommande is null)
             {
-                return NotFound();
+                return NotFound("ElemCommande introuvable !");
             }
 
-            return elemCommande;
+            return Ok(elemcommande);
         }
 
         // PUT: api/ElemCommandes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutElemCommande(int id, ElemCommande elemCommande)
+        public async Task<IActionResult> ModifierElemCommande(int id, ElemCommande elemcommande )
         {
-            if (id != elemCommande.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(elemCommande).State = EntityState.Modified;
+             var result = await _elemcommandeService.ModifierElemCommande(id, elemcommande);
+            if (result is null)
+                return NotFound("ElemCommande introuvable");
+            return Ok(result);
+ 
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ElemCommandeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
         // POST: api/ElemCommandes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ElemCommande>> PostElemCommande(ElemCommande elemCommande)
+        public async Task<ActionResult<ElemCommande>> AjouterElemCommande(ElemCommande elemcommande)
         {
-          if (_context.elemCommandes == null)
-          {
-              return Problem("Entity set 'NegosudDbContext.elemCommandes'  is null.");
-          }
-            _context.elemCommandes.Add(elemCommande);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetElemCommande", new { id = elemCommande.Id }, elemCommande);
+            var result = await _elemcommandeService.AjouterElemCommande(elemcommande);
+            if (result is null)
+                return NotFound("ElemCommande introuvable");
+            return Ok(result);
         }
 
         // DELETE: api/ElemCommandes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteElemCommande(int id)
+        public async Task<IActionResult> SupprimerElemCommande(int id)
         {
-            if (_context.elemCommandes == null)
-            {
-                return NotFound();
-            }
-            var elemCommande = await _context.elemCommandes.FindAsync(id);
-            if (elemCommande == null)
-            {
-                return NotFound();
-            }
-
-            _context.elemCommandes.Remove(elemCommande);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+           var result = await _elemcommandeService.SupprimerElemCommande(id);
+            if (result is null)
+                return NotFound("ElemCommande introuvable");
+            return Ok(result);
         }
 
-        private bool ElemCommandeExists(int id)
-        {
-            return (_context.elemCommandes?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+
     }
 }

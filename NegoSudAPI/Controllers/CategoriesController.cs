@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using NegoSudAPI.Data;
 using NegoSudAPI.Models;
 using Microsoft.AspNetCore.Authorization;
-
+using NegoSudAPI.Services.CategorieService;
 
 namespace NegoSudAPI.Controllers
 {
@@ -17,111 +17,71 @@ namespace NegoSudAPI.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly NegosudDbContext _context;
+        private readonly ICategorieService _categorieService;
 
-        public CategoriesController(NegosudDbContext context)
+        public CategoriesController(ICategorieService categorieService)
         {
-            _context = context;
+            _categorieService = categorieService;
         }
 
         // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Categorie>>> Getcategories()
+        public async Task<ActionResult<IEnumerable<Categorie>>> RecupererToutCategories()
         {
-          if (_context.categories == null)
-          {
-              return NotFound();
-          }
-            return await _context.categories.ToListAsync();
+
+            return await _categorieService.RecupererToutCategories();
         }
 
         // GET: api/Categories/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Categorie>> GetCategorie(int id)
+        public async Task<ActionResult<Categorie>> RecupererCategorie(int id)
         {
-          if (_context.categories == null)
-          {
-              return NotFound();
-          }
-            var categorie = await _context.categories.FindAsync(id);
 
-            if (categorie == null)
+            var categorie = await _categorieService.RecupererCategorie(id);
+
+            if (categorie is null)
             {
-                return NotFound();
+                return NotFound("Categorie introuvable !");
             }
 
-            return categorie;
+            return Ok(categorie);
         }
 
         // PUT: api/Categories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategorie(int id, Categorie categorie)
+        public async Task<IActionResult> ModifierCategorie(int id, Categorie categorie )
         {
-            if (id != categorie.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(categorie).State = EntityState.Modified;
+             var result = await _categorieService.ModifierCategorie(id, categorie);
+            if (result is null)
+                return NotFound("Categorie introuvable");
+            return Ok(result);
+ 
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CategorieExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
         // POST: api/Categories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Categorie>> PostCategorie(Categorie categorie)
+        public async Task<ActionResult<Categorie>> AjouterCategorie(Categorie categorie)
         {
-          if (_context.categories == null)
-          {
-              return Problem("Entity set 'NegosudDbContext.categories'  is null.");
-          }
-            _context.categories.Add(categorie);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCategorie", new { id = categorie.Id }, categorie);
+            var result = await _categorieService.AjouterCategorie(categorie);
+            if (result is null)
+                return NotFound("Categorie introuvable");
+            return Ok(result);
         }
 
         // DELETE: api/Categories/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategorie(int id)
+        public async Task<IActionResult> SupprimerCategorie(int id)
         {
-            if (_context.categories == null)
-            {
-                return NotFound();
-            }
-            var categorie = await _context.categories.FindAsync(id);
-            if (categorie == null)
-            {
-                return NotFound();
-            }
-
-            _context.categories.Remove(categorie);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+           var result = await _categorieService.SupprimerCategorie(id);
+            if (result is null)
+                return NotFound("Categorie introuvable");
+            return Ok(result);
         }
 
-        private bool CategorieExists(int id)
-        {
-            return (_context.categories?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+
     }
 }

@@ -1,6 +1,18 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\imouy\\Desktop\\CUBE-ASP-DON-NET\\backend\\NegosudAPI\\NegoSudAPI\\wwwroot\\uploads\\800px-Web_Page.png",
+      "PackagePath": "staticwebassets\\uploads\\800px-Web_Page.png"
+    },
+    {
+      "Id": "C:\\Users\\imouy\\Desktop\\CUBE-ASP-DON-NET\\backend\\NegosudAPI\\NegoSudAPI\\wwwroot\\uploads\\anime_forest_doll_dolls_cosplay_no_ken_barbie-866244.jpg!s",
+      "PackagePath": "staticwebassets\\uploads\\anime_forest_doll_dolls_cosplay_no_ken_barbie-866244.jpg!s"
+    },
+    {
+      "Id": "C:\\Users\\imouy\\Desktop\\CUBE-ASP-DON-NET\\backend\\NegosudAPI\\NegoSudAPI\\wwwroot\\uploads\\drink_wine_rose_wine_glass-2197361.jpg",
+      "PackagePath": "staticwebassets\\uploads\\drink_wine_rose_wine_glass-2197361.jpg"
+    },
+    {
       "Id": "C:\\Users\\imouy\\Desktop\\CUBE-ASP-DON-NET\\backend\\NegosudAPI\\NegoSudAPI\\wwwroot\\uploads\\string.png",
       "PackagePath": "staticwebassets\\uploads\\string.png"
     },

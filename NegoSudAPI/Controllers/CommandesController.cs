@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NegoSudAPI.Data;
 using NegoSudAPI.Models;
+using Microsoft.AspNetCore.Authorization;
+using NegoSudAPI.Services.CommandeService;
 
 namespace NegoSudAPI.Controllers
 {
@@ -16,111 +17,71 @@ namespace NegoSudAPI.Controllers
     [ApiController]
     public class CommandesController : ControllerBase
     {
-        private readonly NegosudDbContext _context;
+        private readonly ICommandeService _commandeService;
 
-        public CommandesController(NegosudDbContext context)
+        public CommandesController(ICommandeService commandeService)
         {
-            _context = context;
+            _commandeService = commandeService;
         }
 
         // GET: api/Commandes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Commande>>> Getcommandes()
+        public async Task<ActionResult<IEnumerable<Commande>>> RecupererToutCommandes()
         {
-          if (_context.commandes == null)
-          {
-              return NotFound();
-          }
-            return await _context.commandes.ToListAsync();
+
+            return await _commandeService.RecupererToutCommandes();
         }
 
         // GET: api/Commandes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Commande>> GetCommande(int id)
+        public async Task<ActionResult<Commande>> RecupererCommande(int id)
         {
-          if (_context.commandes == null)
-          {
-              return NotFound();
-          }
-            var commande = await _context.commandes.FindAsync(id);
 
-            if (commande == null)
+            var commande = await _commandeService.RecupererCommande(id);
+
+            if (commande is null)
             {
-                return NotFound();
+                return NotFound("Commande introuvable !");
             }
 
-            return commande;
+            return Ok(commande);
         }
 
         // PUT: api/Commandes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCommande(int id, Commande commande)
+        public async Task<IActionResult> ModifierCommande(int id, Commande commande )
         {
-            if (id != commande.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(commande).State = EntityState.Modified;
+             var result = await _commandeService.ModifierCommande(id, commande);
+            if (result is null)
+                return NotFound("Commande introuvable");
+            return Ok(result);
+ 
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CommandeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
         // POST: api/Commandes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Commande>> PostCommande(Commande commande)
+        public async Task<ActionResult<Commande>> AjouterCommande(Commande commande)
         {
-          if (_context.commandes == null)
-          {
-              return Problem("Entity set 'NegosudDbContext.commandes'  is null.");
-          }
-            _context.commandes.Add(commande);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCommande", new { id = commande.Id }, commande);
+            var result = await _commandeService.AjouterCommande(commande);
+            if (result is null)
+                return NotFound("Commande introuvable");
+            return Ok(result);
         }
 
         // DELETE: api/Commandes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCommande(int id)
+        public async Task<IActionResult> SupprimerCommande(int id)
         {
-            if (_context.commandes == null)
-            {
-                return NotFound();
-            }
-            var commande = await _context.commandes.FindAsync(id);
-            if (commande == null)
-            {
-                return NotFound();
-            }
-
-            _context.commandes.Remove(commande);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+           var result = await _commandeService.SupprimerCommande(id);
+            if (result is null)
+                return NotFound("Commande introuvable");
+            return Ok(result);
         }
 
-        private bool CommandeExists(int id)
-        {
-            return (_context.commandes?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+
     }
 }

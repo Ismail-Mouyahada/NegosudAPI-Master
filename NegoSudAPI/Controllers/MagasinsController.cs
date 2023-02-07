@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using NegoSudAPI.Data;
 using NegoSudAPI.Models;
 using Microsoft.AspNetCore.Authorization;
+using NegoSudAPI.Services.MagasinService;
 
 namespace NegoSudAPI.Controllers
 {
@@ -16,111 +17,71 @@ namespace NegoSudAPI.Controllers
     [ApiController]
     public class MagasinsController : ControllerBase
     {
-        private readonly NegosudDbContext _context;
+        private readonly IMagasinService _magasinService;
 
-        public MagasinsController(NegosudDbContext context)
+        public MagasinsController(IMagasinService magasinService)
         {
-            _context = context;
+            _magasinService = magasinService;
         }
 
         // GET: api/Magasins
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Magasin>>> Getmagasins()
+        public async Task<ActionResult<IEnumerable<Magasin>>> RecupererToutMagasins()
         {
-          if (_context.magasins == null)
-          {
-              return NotFound();
-          }
-            return await _context.magasins.ToListAsync();
+
+            return await _magasinService.RecupererToutMagasins();
         }
 
         // GET: api/Magasins/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Magasin>> GetMagasin(int id)
+        public async Task<ActionResult<Magasin>> RecupererMagasin(int id)
         {
-          if (_context.magasins == null)
-          {
-              return NotFound();
-          }
-            var magasin = await _context.magasins.FindAsync(id);
 
-            if (magasin == null)
+            var magasin = await _magasinService.RecupererMagasin(id);
+
+            if (magasin is null)
             {
-                return NotFound();
+                return NotFound("Magasin introuvable !");
             }
 
-            return magasin;
+            return Ok(magasin);
         }
 
         // PUT: api/Magasins/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMagasin(int id, Magasin magasin)
+        public async Task<IActionResult> ModifierMagasin(int id, Magasin magasin )
         {
-            if (id != magasin.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(magasin).State = EntityState.Modified;
+             var result = await _magasinService.ModifierMagasin(id, magasin);
+            if (result is null)
+                return NotFound("Magasin introuvable");
+            return Ok(result);
+ 
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MagasinExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
         // POST: api/Magasins
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Magasin>> PostMagasin(Magasin magasin)
+        public async Task<ActionResult<Magasin>> AjouterMagasin(Magasin magasin)
         {
-          if (_context.magasins == null)
-          {
-              return Problem("Entity set 'NegosudDbContext.magasins'  is null.");
-          }
-            _context.magasins.Add(magasin);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetMagasin", new { id = magasin.Id }, magasin);
+            var result = await _magasinService.AjouterMagasin(magasin);
+            if (result is null)
+                return NotFound("Magasin introuvable");
+            return Ok(result);
         }
 
         // DELETE: api/Magasins/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMagasin(int id)
+        public async Task<IActionResult> SupprimerMagasin(int id)
         {
-            if (_context.magasins == null)
-            {
-                return NotFound();
-            }
-            var magasin = await _context.magasins.FindAsync(id);
-            if (magasin == null)
-            {
-                return NotFound();
-            }
-
-            _context.magasins.Remove(magasin);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+           var result = await _magasinService.SupprimerMagasin(id);
+            if (result is null)
+                return NotFound("Magasin introuvable");
+            return Ok(result);
         }
 
-        private bool MagasinExists(int id)
-        {
-            return (_context.magasins?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+
     }
 }

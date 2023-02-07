@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using NegoSudAPI.Data;
 using NegoSudAPI.Models;
 using Microsoft.AspNetCore.Authorization;
+using NegoSudAPI.Services.ElemFactureService;
 
 namespace NegoSudAPI.Controllers
 {
@@ -16,111 +17,71 @@ namespace NegoSudAPI.Controllers
     [ApiController]
     public class ElemFacturesController : ControllerBase
     {
-        private readonly NegosudDbContext _context;
+        private readonly IElemFactureService _elemfactureService;
 
-        public ElemFacturesController(NegosudDbContext context)
+        public ElemFacturesController(IElemFactureService elemfactureService)
         {
-            _context = context;
+            _elemfactureService = elemfactureService;
         }
 
         // GET: api/ElemFactures
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ElemFacture>>> GetelemFactures()
+        public async Task<ActionResult<IEnumerable<ElemFacture>>> RecupererToutElemFactures()
         {
-          if (_context.elemFactures == null)
-          {
-              return NotFound();
-          }
-            return await _context.elemFactures.ToListAsync();
+
+            return await _elemfactureService.RecupererToutElemFactures();
         }
 
         // GET: api/ElemFactures/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ElemFacture>> GetElemFacture(int id)
+        public async Task<ActionResult<ElemFacture>> RecupererElemFacture(int id)
         {
-          if (_context.elemFactures == null)
-          {
-              return NotFound();
-          }
-            var elemFacture = await _context.elemFactures.FindAsync(id);
 
-            if (elemFacture == null)
+            var elemfacture = await _elemfactureService.RecupererElemFacture(id);
+
+            if (elemfacture is null)
             {
-                return NotFound();
+                return NotFound("ElemFacture introuvable !");
             }
 
-            return elemFacture;
+            return Ok(elemfacture);
         }
 
         // PUT: api/ElemFactures/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutElemFacture(int id, ElemFacture elemFacture)
+        public async Task<IActionResult> ModifierElemFacture(int id, ElemFacture elemfacture )
         {
-            if (id != elemFacture.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(elemFacture).State = EntityState.Modified;
+             var result = await _elemfactureService.ModifierElemFacture(id, elemfacture);
+            if (result is null)
+                return NotFound("ElemFacture introuvable");
+            return Ok(result);
+ 
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ElemFactureExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
         // POST: api/ElemFactures
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ElemFacture>> PostElemFacture(ElemFacture elemFacture)
+        public async Task<ActionResult<ElemFacture>> AjouterElemFacture(ElemFacture elemfacture)
         {
-          if (_context.elemFactures == null)
-          {
-              return Problem("Entity set 'NegosudDbContext.elemFactures'  is null.");
-          }
-            _context.elemFactures.Add(elemFacture);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetElemFacture", new { id = elemFacture.Id }, elemFacture);
+            var result = await _elemfactureService.AjouterElemFacture(elemfacture);
+            if (result is null)
+                return NotFound("ElemFacture introuvable");
+            return Ok(result);
         }
 
         // DELETE: api/ElemFactures/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteElemFacture(int id)
+        public async Task<IActionResult> SupprimerElemFacture(int id)
         {
-            if (_context.elemFactures == null)
-            {
-                return NotFound();
-            }
-            var elemFacture = await _context.elemFactures.FindAsync(id);
-            if (elemFacture == null)
-            {
-                return NotFound();
-            }
-
-            _context.elemFactures.Remove(elemFacture);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+           var result = await _elemfactureService.SupprimerElemFacture(id);
+            if (result is null)
+                return NotFound("ElemFacture introuvable");
+            return Ok(result);
         }
 
-        private bool ElemFactureExists(int id)
-        {
-            return (_context.elemFactures?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+
     }
 }

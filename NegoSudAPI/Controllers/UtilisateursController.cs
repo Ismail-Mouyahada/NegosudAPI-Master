@@ -1,143 +1,87 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NegoSudAPI.Auth;
 using NegoSudAPI.Data;
 using NegoSudAPI.Models;
+using Microsoft.AspNetCore.Authorization;
+using NegoSudAPI.Services.UtilisateurService;
 
 namespace NegoSudAPI.Controllers
 {
-    // [Authorize]
+
     [Route("api/[controller]")]
     [ApiController]
     public class UtilisateursController : ControllerBase
     {
-        private readonly NegosudDbContext _context;
+        private readonly IUtilisateurService _utilisateurService;
 
-        public UtilisateursController(NegosudDbContext context)
+        public UtilisateursController(IUtilisateurService utilisateurService)
         {
-            _context = context;
+            _utilisateurService = utilisateurService;
         }
 
         // GET: api/Utilisateurs
-        [EnableCors]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Utilisateur>>> Getutilisateurs()
+        public async Task<ActionResult<IEnumerable<Utilisateur>>> RecupererToutUtilisateurs()
         {
-            if (_context.utilisateurs == null)
-            {
-                return NotFound("Désolé, aucun Enregistrement n'a été trouvé.");
-            }
-            return await _context.utilisateurs.ToListAsync();
+
+            return await _utilisateurService.RecupererToutUtilisateurs();
         }
 
         // GET: api/Utilisateurs/5
-
         [HttpGet("{id}")]
-        public async Task<ActionResult<Utilisateur>> GetUtilisateur(int id)
+        public async Task<ActionResult<Utilisateur>> RecupererUtilisateur(int id)
         {
-            if (_context.utilisateurs == null)
-            {
-                return NotFound("Désolé, aucun Enregistrement n'a été trouvé.");
-            }
-            var utilisateur = await _context.utilisateurs.FindAsync(id);
 
-            if (utilisateur == null)
+            var utilisateur = await _utilisateurService.RecupererUtilisateur(id);
+
+            if (utilisateur is null)
             {
-                return NotFound("Désolé, aucun Enregistrement n'a été trouvé.");
+                return NotFound("Utilisateur introuvable !");
             }
 
-            return utilisateur;
+            return Ok(utilisateur);
         }
 
         // PUT: api/Utilisateurs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUtilisateur(int id, Utilisateur utilisateur)
+        [HttpPut("{id}"), Authorize]
+        public async Task<IActionResult> ModifierUtilisateur(int id, Utilisateur utilisateur)
         {
-            if (id != utilisateur.Id)
-            {
-                return BadRequest("Il semblerait qu'il y a une erreur dans la requête, veuillez réessayer !");
-            } else if (utilisateur.MotDePasse == null)
-           
-            _context.Entry(utilisateur).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UtilisateurExists(id))
-                {
-                    return NotFound("Désolé, aucun Enregistrement n'a été trouvé.");
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            var result = await _utilisateurService.ModifierUtilisateur(id, utilisateur);
+            if (result is null)
+                return NotFound("Utilisateur introuvable");
+            return Ok(result);
 
-            return NoContent();
+
         }
 
         // POST: api/Utilisateurs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [AllowAnonymous]
-        [EnableCors]
         [HttpPost]
-        public async Task<ActionResult<Utilisateur>> PostUtilisateur(Utilisateur utilisateur)
+        public async Task<ActionResult<Utilisateur>> AjouterUtilisateur(Utilisateur utilisateur)
         {
-            // Gestion des exceptions
-            if (_context.utilisateurs == null)
-            {
-                return Problem("Desolé, l'Entité 'NegosudDbContext.utilisateurs'  est vide(nullException).");
-            } else if (utilisateur.Id < 0){
-                return Problem("Desolé l'identifiant devrait être supérieur a 0");
-            }
-
-            // Récuperations des données
-            utilisateur.MotDePasse = new PasswordHash().HashedPass(utilisateur.MotDePasse);
-            _context.utilisateurs.Add(utilisateur);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction("GetUtilisateur", new { id = utilisateur.Id }, utilisateur);
+            var result = await _utilisateurService.AjouterUtilisateur(utilisateur);
+            if (result is null)
+                return NotFound("Utilisateur introuvable");
+            return Ok(result);
         }
-
-
 
         // DELETE: api/Utilisateurs/5
-
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUtilisateur(int id)
+        public async Task<IActionResult> SupprimerUtilisateur(int id)
         {
-            if (_context.utilisateurs == null)
-            {
-                return NotFound();
-            }
-            var utilisateur = await _context.utilisateurs.FindAsync(id);
-            if (utilisateur == null)
-            {
-                return NotFound();
-            }
-
-            _context.utilisateurs.Remove(utilisateur);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            var result = await _utilisateurService.SupprimerUtilisateur(id);
+            if (result is null)
+                return NotFound("Utilisateur introuvable");
+            return Ok(result);
         }
 
-        private bool UtilisateurExists(int id)
-        {
-            return (_context.utilisateurs?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using NegoSudAPI.Data;
 using NegoSudAPI.Models;
 using Microsoft.AspNetCore.Authorization;
+using NegoSudAPI.Services.FactureService;
 
 namespace NegoSudAPI.Controllers
 {
@@ -16,111 +17,71 @@ namespace NegoSudAPI.Controllers
     [ApiController]
     public class FacturesController : ControllerBase
     {
-        private readonly NegosudDbContext _context;
+        private readonly IFactureService _factureService;
 
-        public FacturesController(NegosudDbContext context)
+        public FacturesController(IFactureService factureService)
         {
-            _context = context;
+            _factureService = factureService;
         }
 
         // GET: api/Factures
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Facture>>> Getfactures()
+        public async Task<ActionResult<IEnumerable<Facture>>> RecupererToutFactures()
         {
-          if (_context.factures == null)
-          {
-              return NotFound();
-          }
-            return await _context.factures.ToListAsync();
+
+            return await _factureService.RecupererToutFactures();
         }
 
         // GET: api/Factures/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Facture>> GetFacture(int id)
+        public async Task<ActionResult<Facture>> RecupererFacture(int id)
         {
-          if (_context.factures == null)
-          {
-              return NotFound();
-          }
-            var facture = await _context.factures.FindAsync(id);
 
-            if (facture == null)
+            var facture = await _factureService.RecupererFacture(id);
+
+            if (facture is null)
             {
-                return NotFound();
+                return NotFound("Facture introuvable !");
             }
 
-            return facture;
+            return Ok(facture);
         }
 
         // PUT: api/Factures/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFacture(int id, Facture facture)
+        public async Task<IActionResult> ModifierFacture(int id, Facture facture )
         {
-            if (id != facture.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(facture).State = EntityState.Modified;
+             var result = await _factureService.ModifierFacture(id, facture);
+            if (result is null)
+                return NotFound("Facture introuvable");
+            return Ok(result);
+ 
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!FactureExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
         // POST: api/Factures
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Facture>> PostFacture(Facture facture)
+        public async Task<ActionResult<Facture>> AjouterFacture(Facture facture)
         {
-          if (_context.factures == null)
-          {
-              return Problem("Entity set 'NegosudDbContext.factures'  is null.");
-          }
-            _context.factures.Add(facture);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetFacture", new { id = facture.Id }, facture);
+            var result = await _factureService.AjouterFacture(facture);
+            if (result is null)
+                return NotFound("Facture introuvable");
+            return Ok(result);
         }
 
         // DELETE: api/Factures/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteFacture(int id)
+        public async Task<IActionResult> SupprimerFacture(int id)
         {
-            if (_context.factures == null)
-            {
-                return NotFound();
-            }
-            var facture = await _context.factures.FindAsync(id);
-            if (facture == null)
-            {
-                return NotFound();
-            }
-
-            _context.factures.Remove(facture);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+           var result = await _factureService.SupprimerFacture(id);
+            if (result is null)
+                return NotFound("Facture introuvable");
+            return Ok(result);
         }
 
-        private bool FactureExists(int id)
-        {
-            return (_context.factures?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using NegoSudAPI.Data;
 using NegoSudAPI.Models;
 using Microsoft.AspNetCore.Authorization;
+using NegoSudAPI.Services.FournisseurService;
 
 namespace NegoSudAPI.Controllers
 {
@@ -16,111 +17,71 @@ namespace NegoSudAPI.Controllers
     [ApiController]
     public class FournisseursController : ControllerBase
     {
-        private readonly NegosudDbContext _context;
+        private readonly IFournisseurService _produitService;
 
-        public FournisseursController(NegosudDbContext context)
+        public FournisseursController(IFournisseurService produitService)
         {
-            _context = context;
+            _produitService = produitService;
         }
 
         // GET: api/Fournisseurs
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Fournisseur>>> Getfournisseurs()
+        public async Task<ActionResult<IEnumerable<Fournisseur>>> RecupererToutFournisseurs()
         {
-          if (_context.fournisseurs == null)
-          {
-              return NotFound();
-          }
-            return await _context.fournisseurs.ToListAsync();
+
+            return await _produitService.RecupererToutFournisseurs();
         }
 
         // GET: api/Fournisseurs/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Fournisseur>> GetFournisseur(int id)
+        public async Task<ActionResult<Fournisseur>> RecupererFournisseur(int id)
         {
-          if (_context.fournisseurs == null)
-          {
-              return NotFound();
-          }
-            var fournisseur = await _context.fournisseurs.FindAsync(id);
 
-            if (fournisseur == null)
+            var produit = await _produitService.RecupererFournisseur(id);
+
+            if (produit is null)
             {
-                return NotFound();
+                return NotFound("Fournisseur introuvable !");
             }
 
-            return fournisseur;
+            return Ok(produit);
         }
 
         // PUT: api/Fournisseurs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFournisseur(int id, Fournisseur fournisseur)
+        public async Task<IActionResult> ModifierFournisseur(int id, Fournisseur produit )
         {
-            if (id != fournisseur.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(fournisseur).State = EntityState.Modified;
+             var result = await _produitService.ModifierFournisseur(id, produit);
+            if (result is null)
+                return NotFound("Fournisseur introuvable");
+            return Ok(result);
+ 
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!FournisseurExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
         // POST: api/Fournisseurs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Fournisseur>> PostFournisseur(Fournisseur fournisseur)
+        public async Task<ActionResult<Fournisseur>> AjouterFournisseur(Fournisseur produit)
         {
-          if (_context.fournisseurs == null)
-          {
-              return Problem("Entity set 'NegosudDbContext.fournisseurs'  is null.");
-          }
-            _context.fournisseurs.Add(fournisseur);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetFournisseur", new { id = fournisseur.Id }, fournisseur);
+            var result = await _produitService.AjouterFournisseur(produit);
+            if (result is null)
+                return NotFound("Fournisseur introuvable");
+            return Ok(result);
         }
 
         // DELETE: api/Fournisseurs/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteFournisseur(int id)
+        public async Task<IActionResult> SupprimerFournisseur(int id)
         {
-            if (_context.fournisseurs == null)
-            {
-                return NotFound();
-            }
-            var fournisseur = await _context.fournisseurs.FindAsync(id);
-            if (fournisseur == null)
-            {
-                return NotFound();
-            }
-
-            _context.fournisseurs.Remove(fournisseur);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+           var result = await _produitService.SupprimerFournisseur(id);
+            if (result is null)
+                return NotFound("Fournisseur introuvable");
+            return Ok(result);
         }
 
-        private bool FournisseurExists(int id)
-        {
-            return (_context.fournisseurs?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+
     }
 }

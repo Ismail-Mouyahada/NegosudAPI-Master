@@ -11,5 +11,6 @@ namespace NegoSudAPI.Services.UtilisateurService
         Task<List<Utilisateur>> AjouterUtilisateur(Utilisateur Utilisateur);
         Task<List<Utilisateur>?> ModifierUtilisateur(int id, Utilisateur request);
         Task<List<Utilisateur>?> SupprimerUtilisateur(int id);
+ 
     }
 }

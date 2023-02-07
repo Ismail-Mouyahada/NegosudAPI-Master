@@ -10,15 +10,20 @@ namespace NegoSudAPI.Mail
     public class SendMail
     {
 
-        public void SendIt(string toAddress, string subject, string body)
+        public void SendIt(string EnvoyerPar, string Sujet, string htmlFilePath,string receptionneur)
         {
+            string Corps = File.ReadAllText(htmlFilePath);
+
+            Corps = Corps.Replace("{receptionneur}", receptionneur);
+            Corps = Corps.Replace("{date}", DateTime.Now.ToString("MM/dd/yyyy"));
+
             MailMessage message = new MailMessage();
             SmtpClient smtp = new SmtpClient();
             message.From = new MailAddress("client-service@negosud.fr");
-            message.To.Add(new MailAddress(toAddress));
-            message.Subject = subject;
+            message.To.Add(new MailAddress(EnvoyerPar));
+            message.Subject = Sujet;
             message.IsBodyHtml = true;
-            message.Body = body;
+            message.Body = Corps;
             smtp.Port = 2525;
             smtp.Host = "sandbox.smtp.mailtrap.io";
             smtp.EnableSsl = true;

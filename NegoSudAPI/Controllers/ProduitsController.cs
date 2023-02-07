@@ -6,69 +6,82 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NegoSudAPI.Data;
-using Microsoft.AspNetCore.Authorization;
 using NegoSudAPI.Models;
-using Microsoft.AspNetCore.Cors;
-using NegoSudAPI.Services;
+using Microsoft.AspNetCore.Authorization;
+using NegoSudAPI.Services.ProduitService;
 
 namespace NegoSudAPI.Controllers
 {
-    //[Authorize]
+     
     [Route("api/[controller]")]
     [ApiController]
-    public class ProduitController : ControllerBase
+    public class ProduitsController : ControllerBase
     {
         private readonly IProduitService _produitService;
 
-        public ProduitController(IProduitService produitService)
+        public ProduitsController(IProduitService produitService)
         {
             _produitService = produitService;
         }
 
+        // GET: api/Produits
         [HttpGet]
-        public async Task<ActionResult<List<Produit>>> GetAllProduits()
+        public async Task<ActionResult<IEnumerable<Produit>>> RecupererToutProduits()
         {
-            var result = _produitService.GetAllProduits();
-            if (result is null)
-                return NotFound("Produits est introuvable pour l'instant !");
-            return Ok(result);
+
+            return await _produitService.RecupererToutProduits();
         }
 
+        // GET: api/Produits/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<Produit>>> GetProduit(int id)
+        public async Task<ActionResult<Produit>> RecupererProduit(int id)
         {
-            var result = _produitService.GetProduit(id);
+
+            var produit = await _produitService.RecupererProduit(id);
+
+            if (produit is null)
+            {
+                return NotFound("Produit introuvable !");
+            }
+
+            return Ok(produit);
+        }
+
+        // PUT: api/Produits/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}"),Authorize]
+        public async Task<IActionResult> ModifierProduit(int id, Produit produit )
+        {
+
+             var result = await _produitService.ModifierProduit(id, produit);
             if (result is null)
-                return NotFound("Produit est introuvable pour l'instant !");
+                return NotFound("Produit introuvable");
+            return Ok(result);
+ 
+
+        }
+
+        // POST: api/Produits
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost,Authorize]
+        public async Task<ActionResult<Produit>> AjouterProduit(Produit produit)
+        {
+            var result = await _produitService.AjouterProduit(produit);
+            if (result is null)
+                return NotFound("Produit introuvable");
             return Ok(result);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<List<Produit>>> AddProduit(Produit produit)
-        {
-            var result = _produitService.AddProduit(produit);
-            if (result is null)
-                return NotFound("Produit est introuvable pour l'instant !");
-            return Ok(result);
-        }
-
-
-        [HttpPut("{id}")]
-        public async Task<ActionResult<List<Produit>>> UpdateProduit(int id, Produit request)
-        {
-            var result = _produitService.UpdateProduit(id, request);
-            if (result is null)
-                return NotFound("Produit est introuvable pour l'instant !");
-            return Ok(result);
-        }
-
+        // DELETE: api/Produits/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<List<Produit>>> DeleteProduit(int id)
+        public async Task<IActionResult> SupprimerProduit(int id)
         {
-            var result = _produitService.DeleteProduit(id);
+           var result = await _produitService.SupprimerProduit(id);
             if (result is null)
-                return NotFound("Produit est introuvable pour l'instant !");
+                return NotFound("Produit introuvable");
             return Ok(result);
         }
+
+
     }
 }

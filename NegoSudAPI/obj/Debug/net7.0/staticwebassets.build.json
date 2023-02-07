@@ -1,11 +1,19 @@
 {
   "Version": 1,
-  "Hash": "YiAWb5qFFAYbvrgH/664/UI2MKGvop2QedGH697rz3g=",
+  "Hash": "Lhqkf/iU523aH5fI1xxfuYggj6mqDYrKeN/BOU18Xfg=",
   "Source": "NegoSudAPI",
   "BasePath": "_content/NegoSudAPI",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "NegoSudAPI\\wwwroot",
+      "Source": "NegoSudAPI",
+      "ContentRoot": "C:\\Users\\imouy\\Desktop\\CUBE-ASP-DON-NET\\backend\\NegosudAPI\\NegoSudAPI\\wwwroot\\",
+      "BasePath": "_content/NegoSudAPI",
+      "Pattern": "**"
+    }
+  ],
   "Assets": []
 }

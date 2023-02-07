@@ -2,7 +2,7 @@
 using NegoSudAPI.Models;
 
 
-namespace NegoSudAPI.Services.ProduitService
+namespace NegoSudAPI.Services.ProduitService 
 {
     public interface IProduitService
     {
@@ -11,5 +11,6 @@ namespace NegoSudAPI.Services.ProduitService
         Task<List<Produit>> AjouterProduit(Produit Produit);
         Task<List<Produit>?> ModifierProduit(int id, Produit request);
         Task<List<Produit>?> SupprimerProduit(int id);
+        
     }
 }

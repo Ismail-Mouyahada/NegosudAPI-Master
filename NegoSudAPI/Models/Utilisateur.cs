@@ -17,6 +17,7 @@ namespace NegoSudAPI.Models
         public int? Role  { get; set; }
         public bool? IsBusiness { get; set;}
         public string? SIREN  { get; set; }
+        // public string? tokenRefesh { get; set;}
         public DateTime? DateInscription  { get; set; }
         public DateTime? DateModification  { get; set; }
 
