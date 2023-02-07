@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NegoSudAPI.Data;
 
@@ -10,9 +11,11 @@ using NegoSudAPI.Data;
 namespace NegoSudAPI.Migrations
 {
     [DbContext(typeof(NegosudDbContext))]
-    partial class NegosudDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230207213228_start")]
+    partial class start
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -68,52 +68,37 @@ namespace NegoSudAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Catalogue>> AjouterCatalogue(Catalogue catalogue)
         {
-            var path = catalogue.Image;
+            var fileName = Path.GetFileName(catalogue.Image);
 
-            if (!Path.IsPathRooted(catalogue.Image))
+            if (string.IsNullOrEmpty(fileName))
             {
-
-                var fileName = Path.GetFileName(catalogue.Image);
-
-                if (fileName == null || fileName == "")
-                {
-                    throw new ArgumentException("Image must be");
-                }
-                path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", fileName);
-
-                var webClient = new WebClient();
-
-                webClient.DownloadFile(catalogue.Image, path);
-
+                return BadRequest("Image must be specified");
             }
 
-            var uploadsDirectory = Path.GetDirectoryName(path);
+            var uploadsDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
             if (!Directory.Exists(uploadsDirectory))
             {
-                if (uploadsDirectory == null)
-                {
-                    throw new ArgumentException();
-                }
                 Directory.CreateDirectory(uploadsDirectory);
             }
 
-            if (path == null)
+            var path = Path.Combine(uploadsDirectory, fileName);
+
+            using (var httpClient = new HttpClient())
             {
-                throw new ArgumentException();
+                using (var response = await httpClient.GetAsync(catalogue.Image, HttpCompletionOption.ResponseHeadersRead))
+                {
+                    response.EnsureSuccessStatusCode();
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        await response.Content.CopyToAsync(fileStream);
+                    }
+                }
             }
 
-            using (var stream = new FileStream(path, FileMode.Create))
-            {
+            await _catalogueService.AjouterCatalogue(catalogue);
 
-                await _catalogueService.AjouterCatalogue(catalogue);
-            }
-
-            if (path == null)
-                return NotFound("Catalogue introuvable");
-
-            return Ok(path);
+            return Ok();
         }
-
 
         // DELETE: api/Catalogues/5
         [HttpDelete("{id}")]

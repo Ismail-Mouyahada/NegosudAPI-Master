@@ -31,14 +31,14 @@ internal class Program
 
 
         // Add services to the container.
-        builder.Services.AddCors(options =>
-        {
-            options.AddPolicy(name: "PolicyOfCors",
-                            policy =>
-                            {
-                                policy.WithOrigins("http://localhost:8000");
-                            });
-        });
+        // builder.Services.AddCors(options =>
+        // {
+        //     options.AddPolicy(name: "PolicyOfCors",
+        //                     policy =>
+        //                     {
+        //                         policy.WithOrigins("http://localhost:8000");
+        //                     });
+        // });
         builder.Services.AddControllers();
 
 
@@ -145,7 +145,7 @@ internal class Program
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
-        app.UseCors("PolicyOfCors");
+        app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
         //app.MapAdresseEndpoints();
 
         app.Run("http://localhost:8000"); // To Set up for  real project
