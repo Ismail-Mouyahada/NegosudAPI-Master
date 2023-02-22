@@ -75,6 +75,7 @@ namespace NegoSudAPI.Services.PaysService
 
             pays.NamePays  = request.NamePays ;
             
+            
 
             await _context.SaveChangesAsync();
 

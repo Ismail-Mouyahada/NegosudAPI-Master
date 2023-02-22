@@ -2,10 +2,11 @@
 using NegoSudAPI.Data;
 using NegoSudAPI.Models;
 using Microsoft.EntityFrameworkCore;
- 
+
 
 namespace NegoSudAPI.Services.ProduitService
-{ public class ProduitService : IProduitService
+{
+    public class ProduitService : IProduitService
     {
         private readonly NegosudDbContext _context;
 
@@ -16,11 +17,11 @@ namespace NegoSudAPI.Services.ProduitService
 
         public async Task<List<Produit>> AjouterProduit(Produit produit)
         {
-             if (_context.produits == null)
+            if (_context.produits == null)
             {
                 throw new ArgumentNullException(nameof(_context.utilisateurs), "tout est vide.");
             }
-              _context.produits.Add(produit);
+            _context.produits.Add(produit);
             await _context.SaveChangesAsync();
             return await _context.produits.ToListAsync();
         }
@@ -40,13 +41,13 @@ namespace NegoSudAPI.Services.ProduitService
             return await _context.produits.ToListAsync();
         }
 
-        public   Task<List<Produit>> RecupererToutProduits()
+        public Task<List<Produit>> RecupererToutProduits()
         {
             if (_context.produits == null)
             {
                 throw new ArgumentNullException(nameof(_context.utilisateurs), "tout est vide.");
             }
-            var produits =   _context.produits.ToListAsync();
+            var produits = _context.produits.ToListAsync();
             return produits;
         }
 
@@ -73,32 +74,33 @@ namespace NegoSudAPI.Services.ProduitService
             if (produit is null)
                 return null;
 
+            produit.SKU = request.SKU;
+            produit.NomProduit = request.NomProduit;
             produit.Alcool = request.Alcool;
             produit.Description = request.Description;
             produit.Aliments = request.Aliments;
             produit.Prix_carton = request.Prix_carton;
             produit.Prix_unitaire = request.Prix_unitaire;
-            produit.CategorieId = request.CategorieId;
             produit.Conservation = request.Conservation;
             produit.Couleur = request.Couleur;
-            produit.ProducteurId = request.ProducteurId;
-            produit.Producteur = request.Producteur;
             produit.Raisins = request.Raisins;
             produit.Remise = request.Remise;
             produit.Resumee = request.Resumee;
             produit.Volume = request.Volume;
-            produit.CategorieId = request.CategorieId;
+            produit.Region = request.Region;
             produit.TVA = request.TVA;
+            produit.Expiration = request.Expiration;
             produit.ImagePrincipal = request.ImagePrincipal;
             produit.CategorieId = request.CategorieId;
+            produit.ProducteurId = request.ProducteurId;
             produit.DateModification = DateTime.Now;
-            
 
+            
             await _context.SaveChangesAsync();
 
             return await _context.produits.ToListAsync();
         }
 
-        
+
     }
 }

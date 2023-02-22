@@ -2,10 +2,11 @@
 using NegoSudAPI.Data;
 using NegoSudAPI.Models;
 using Microsoft.EntityFrameworkCore;
- 
+
 
 namespace NegoSudAPI.Services.MailerService
-{ public class MailerService : IMailerService
+{
+    public class MailerService : IMailerService
     {
         private readonly NegosudDbContext _context;
 
@@ -16,11 +17,11 @@ namespace NegoSudAPI.Services.MailerService
 
         public async Task<List<Mailer>> SendMailer(Mailer mailer)
         {
-             if (_context.mailers == null)
+            if (_context.mailers == null)
             {
                 throw new ArgumentNullException(nameof(_context.mailers), "tout est vide.");
             }
-              _context.mailers.Add(mailer);
+            _context.mailers.Add(mailer);
             await _context.SaveChangesAsync();
             return await _context.mailers.ToListAsync();
         }
@@ -40,13 +41,13 @@ namespace NegoSudAPI.Services.MailerService
             return await _context.mailers.ToListAsync();
         }
 
-        public   Task<List<Mailer>> RecupererToutMailers()
+        public Task<List<Mailer>> RecupererToutMailers()
         {
             if (_context.mailers == null)
             {
                 throw new ArgumentNullException(nameof(_context.mailers), "tout est vide.");
             }
-            var mailers =   _context.mailers.ToListAsync();
+            var mailers = _context.mailers.ToListAsync();
             return mailers;
         }
 
@@ -78,15 +79,12 @@ namespace NegoSudAPI.Services.MailerService
             mailer.EnvoyePar = request.EnvoyePar;
             mailer.DateInscription = request.DateInscription;
             mailer.receptionneur = request.receptionneur;
-        
-
-            
-
+ 
             await _context.SaveChangesAsync();
 
             return await _context.mailers.ToListAsync();
         }
 
-        
+
     }
 }
