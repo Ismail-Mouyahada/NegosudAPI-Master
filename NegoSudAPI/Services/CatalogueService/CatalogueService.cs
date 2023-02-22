@@ -73,8 +73,9 @@ namespace NegoSudAPI.Services.CatalogueService
             if (catalogue is null)
                 return null;
 
-            catalogue  = request ;
-            
+            catalogue.Image = request.Image;
+            catalogue.ProduitId = request.ProduitId;
+            catalogue.Reference = request.Reference;
 
             await _context.SaveChangesAsync();
 

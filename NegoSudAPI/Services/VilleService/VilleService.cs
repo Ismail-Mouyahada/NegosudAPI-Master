@@ -73,7 +73,10 @@ namespace NegoSudAPI.Services.VilleService
             if (ville is null)
                 return null;
 
-            ville  = request ;
+            ville.NameVille = request.NameVille;
+            ville.Region = request.Region;
+            ville.RegionId = request.RegionId;
+           
             
 
             await _context.SaveChangesAsync();

@@ -53,11 +53,10 @@ namespace NegoSudAPI.Controllers
         public async Task<IActionResult> ModifierCategorie(int id, Categorie categorie )
         {
 
-             var result = await _categorieService.ModifierCategorie(id, categorie);
+            var result = await _categorieService.ModifierCategorie(id, categorie);
             if (result is null)
                 return NotFound("Categorie introuvable");
             return Ok(result);
- 
 
         }
 

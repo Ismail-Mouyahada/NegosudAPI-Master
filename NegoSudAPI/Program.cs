@@ -29,18 +29,7 @@ internal class Program
         var builder = WebApplication.CreateBuilder(args);
         var ConnectionToMysqlStr = builder.Configuration.GetConnectionString("MySQLConntectionStr");
 
-
-        // Add services to the container.
-        // builder.Services.AddCors(options =>
-        // {
-        //     options.AddPolicy(name: "PolicyOfCors",
-        //                     policy =>
-        //                     {
-        //                         policy.WithOrigins("http://localhost:8000");
-        //                     });
-        // });
         builder.Services.AddControllers();
-
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();

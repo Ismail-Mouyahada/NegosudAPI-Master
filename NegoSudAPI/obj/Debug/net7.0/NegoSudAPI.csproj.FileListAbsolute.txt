@@ -262,3 +262,7 @@ C:\Users\imouy\Desktop\CUBE-ASP-DON-NET\backend\NegosudAPI\NegoSudAPI\obj\Debug\
 C:\Users\imouy\Desktop\CUBE-ASP-DON-NET\backend\NegosudAPI\NegoSudAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\imouy\Desktop\CUBE-ASP-DON-NET\backend\NegosudAPI\NegoSudAPI\bin\Debug\net7.0\Microsoft.CodeAnalysis.Elfie.dll
 C:\Users\imouy\Desktop\CUBE-ASP-DON-NET\backend\NegosudAPI\NegoSudAPI\bin\Debug\net7.0\NegoSudAPI.staticwebassets.runtime.json
+C:\Users\imouy\Desktop\CUBE-ASP-DON-NET\backend\NegosudAPI\NegoSudAPI\bin\Debug\net7.0\xunit.abstractions.dll
+C:\Users\imouy\Desktop\CUBE-ASP-DON-NET\backend\NegosudAPI\NegoSudAPI\bin\Debug\net7.0\xunit.assert.dll
+C:\Users\imouy\Desktop\CUBE-ASP-DON-NET\backend\NegosudAPI\NegoSudAPI\bin\Debug\net7.0\xunit.core.dll
+C:\Users\imouy\Desktop\CUBE-ASP-DON-NET\backend\NegosudAPI\NegoSudAPI\bin\Debug\net7.0\xunit.execution.dotnet.dll

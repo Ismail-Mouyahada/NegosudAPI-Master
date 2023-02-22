@@ -63,6 +63,33 @@ namespace NegoSudAPI.Migrations
                     b.HasIndex("UtilisateurId");
 
                     b.ToTable("adresses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AdresseComplet = "13 rue des champettle",
+                            AdressePrincipal = "rue des champelle",
+                            CodePostal = "15312",
+                            DateCreation = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(8930),
+                            DateModification = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(8960),
+                            Pays = "France",
+                            Region = "Normandie",
+                            UtilisateurId = 1,
+                            Ville = "Rouen"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AdresseComplet = "13 rue des champettle",
+                            AdressePrincipal = "rue des champelle",
+                            CodePostal = "15312",
+                            DateCreation = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9012),
+                            DateModification = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9017),
+                            Pays = "France",
+                            Region = "Normandie",
+                            Ville = "Rouen"
+                        });
                 });
 
             modelBuilder.Entity("NegoSudAPI.Models.Catalogue", b =>
@@ -85,6 +112,22 @@ namespace NegoSudAPI.Migrations
                     b.HasIndex("ProduitId");
 
                     b.ToTable("catalogues");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Image = "https://www.vinatis.com/62341-thickbox_default/chateauneuf-du-pape-grand-vin-2018-chateau-de-nalys-e-guigal.png",
+                            ProduitId = 1,
+                            Reference = "DEN12"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Image = "https://www.vinatis.com/62341-thickbox_default/chateauneuf-du-pape-grand-vin-2018-chateau-de-nalys-e-guigal.png",
+                            ProduitId = 2,
+                            Reference = "EDE54"
+                        });
                 });
 
             modelBuilder.Entity("NegoSudAPI.Models.Categorie", b =>
@@ -99,6 +142,18 @@ namespace NegoSudAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            NameCategorie = "Vin rouge"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            NameCategorie = "Vin Blanc"
+                        });
                 });
 
             modelBuilder.Entity("NegoSudAPI.Models.Commande", b =>
@@ -127,6 +182,26 @@ namespace NegoSudAPI.Migrations
                     b.HasIndex("UtilisateurId");
 
                     b.ToTable("commandes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DateCommande = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9883),
+                            DateModification = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9895),
+                            Remise = 15f,
+                            Statut = "en cours",
+                            UtilisateurId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DateCommande = new DateTime(2023, 2, 9, 2, 37, 25, 832, DateTimeKind.Local),
+                            DateModification = new DateTime(2023, 2, 9, 2, 37, 25, 832, DateTimeKind.Local).AddTicks(5),
+                            Remise = 15f,
+                            Statut = "livré",
+                            UtilisateurId = 2
+                        });
                 });
 
             modelBuilder.Entity("NegoSudAPI.Models.ElemCommande", b =>
@@ -161,6 +236,30 @@ namespace NegoSudAPI.Migrations
                     b.HasIndex("CommandeId");
 
                     b.ToTable("elemCommandes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Alerte = "seuil est dépassé",
+                            CommandeId = 1,
+                            DateCreation = new DateTime(2023, 2, 9, 2, 37, 25, 832, DateTimeKind.Local).AddTicks(70),
+                            DateModification = new DateTime(2023, 2, 9, 2, 37, 25, 832, DateTimeKind.Local).AddTicks(77),
+                            QuantiteCommande = 5,
+                            SeuilAlerte = 3,
+                            TotalCommande = 64.21f
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Alerte = "seuil est dépassé",
+                            CommandeId = 2,
+                            DateCreation = new DateTime(2023, 2, 9, 2, 37, 25, 832, DateTimeKind.Local).AddTicks(83),
+                            DateModification = new DateTime(2023, 2, 9, 2, 37, 25, 832, DateTimeKind.Local).AddTicks(86),
+                            QuantiteCommande = 5,
+                            SeuilAlerte = 3,
+                            TotalCommande = 66.21f
+                        });
                 });
 
             modelBuilder.Entity("NegoSudAPI.Models.ElemFacture", b =>
@@ -183,6 +282,22 @@ namespace NegoSudAPI.Migrations
                     b.HasIndex("FactureId");
 
                     b.ToTable("elemFactures");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DateCreation = new DateTime(2023, 2, 9, 2, 37, 25, 832, DateTimeKind.Local).AddTicks(218),
+                            DateModification = new DateTime(2023, 2, 9, 2, 37, 25, 832, DateTimeKind.Local).AddTicks(225),
+                            FactureId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DateCreation = new DateTime(2023, 2, 9, 2, 37, 25, 832, DateTimeKind.Local).AddTicks(230),
+                            DateModification = new DateTime(2023, 2, 9, 2, 37, 25, 832, DateTimeKind.Local).AddTicks(233),
+                            FactureId = 2
+                        });
                 });
 
             modelBuilder.Entity("NegoSudAPI.Models.Facture", b =>
@@ -211,6 +326,26 @@ namespace NegoSudAPI.Migrations
                     b.HasIndex("CommandeId");
 
                     b.ToTable("factures");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CommandeId = 1,
+                            DateCreation = new DateTime(2023, 2, 9, 2, 37, 25, 832, DateTimeKind.Local).AddTicks(137),
+                            DateModification = new DateTime(2023, 2, 9, 2, 37, 25, 832, DateTimeKind.Local).AddTicks(144),
+                            FactureTotal = 45.3f,
+                            Reference = "FR656D"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CommandeId = 1,
+                            DateCreation = new DateTime(2023, 2, 9, 2, 37, 25, 832, DateTimeKind.Local).AddTicks(148),
+                            DateModification = new DateTime(2023, 2, 9, 2, 37, 25, 832, DateTimeKind.Local).AddTicks(152),
+                            FactureTotal = 45.3f,
+                            Reference = "FR326D"
+                        });
                 });
 
             modelBuilder.Entity("NegoSudAPI.Models.Fournisseur", b =>
@@ -258,6 +393,40 @@ namespace NegoSudAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("fournisseurs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Adresse = "13 rue des saloumé",
+                            DateCreation = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9408),
+                            DateModification = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9418),
+                            Email = "fournisseur1@negosud.com",
+                            Fix = "+3324515475",
+                            NomFournisseur = "Fournisseur Vin blanc",
+                            Pays = "France",
+                            Region = "Normandie",
+                            Reputation = "Excellent",
+                            Rue = "12 rue des chameaux",
+                            Tel = "+33678407516",
+                            Ville = "Paris"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Adresse = "11 rue des saloumé",
+                            DateCreation = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9430),
+                            DateModification = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9434),
+                            Email = "fournisseur2@negosud.com",
+                            Fix = "+3324515475",
+                            NomFournisseur = "Fournisseur Vin Rouge",
+                            Pays = "France",
+                            Region = "Normandie",
+                            Reputation = "Excellent",
+                            Rue = "12 rue des chameaux",
+                            Tel = "+33678407516",
+                            Ville = "Marsaille"
+                        });
                 });
 
             modelBuilder.Entity("NegoSudAPI.Models.Inventaire", b =>
@@ -301,6 +470,36 @@ namespace NegoSudAPI.Migrations
                     b.HasIndex("MagasinId");
 
                     b.ToTable("inventaires");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Appelation = "Fournisseur Vin blanc",
+                            Classement = "Première rayon 1C4",
+                            Couleur = "Rouge Foncé",
+                            DateCreation = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9705),
+                            DateModification = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9711),
+                            MagasinId = 1,
+                            Millesime = "2016",
+                            Nom = "Blanc rouge Chapelle",
+                            Position = "2 cave, rayon 3",
+                            QuantiteStock = 66
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Appelation = "Fournisseur Vin blanc",
+                            Classement = "Première rayon 1C4",
+                            Couleur = "Rouge Foncé",
+                            DateCreation = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9717),
+                            DateModification = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9720),
+                            MagasinId = 2,
+                            Millesime = "2016",
+                            Nom = "Blanc rouge Chapelle",
+                            Position = "2 cave, rayon 3",
+                            QuantiteStock = 66
+                        });
                 });
 
             modelBuilder.Entity("NegoSudAPI.Models.Magasin", b =>
@@ -350,6 +549,40 @@ namespace NegoSudAPI.Migrations
                     b.HasIndex("ProducteurId");
 
                     b.ToTable("magasins");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Adresse = "13 rue des saloumé",
+                            CodePostal = "65412",
+                            DateCreation = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9633),
+                            DateModification = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9639),
+                            Email = "fournisseur1@negosud.com",
+                            Fix = "+3324515475",
+                            NomMagasin = "Fournisseur Vin blanc",
+                            Pays = "France",
+                            ProducteurId = 1,
+                            Region = "Normandie",
+                            Rue = "12 rue des chameaux",
+                            Tel = "+33678407516"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Adresse = "11 rue des saloumé",
+                            CodePostal = "56515",
+                            DateCreation = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9648),
+                            DateModification = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9651),
+                            Email = "fournisseur2@negosud.com",
+                            Fix = "+3324515475",
+                            NomMagasin = "Fournisseur Vin Rouge",
+                            Pays = "France",
+                            ProducteurId = 2,
+                            Region = "Normandie",
+                            Rue = "12 rue des chameaux",
+                            Tel = "+33678407516"
+                        });
                 });
 
             modelBuilder.Entity("NegoSudAPI.Models.Mailer", b =>
@@ -394,6 +627,28 @@ namespace NegoSudAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("pays");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            NamePays = "France"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            NamePays = "Italie"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            NamePays = "Portugal"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            NamePays = "Espagne"
+                        });
                 });
 
             modelBuilder.Entity("NegoSudAPI.Models.Producteur", b =>
@@ -455,6 +710,42 @@ namespace NegoSudAPI.Migrations
                     b.HasIndex("FournisseurId");
 
                     b.ToTable("producteurs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Adresse = "13 rue des saloumé",
+                            DateCreation = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9493),
+                            DateModification = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9500),
+                            Email = "fournisseur1@negosud.com",
+                            Fix = "+3324515475",
+                            FournisseurId = 1,
+                            NomProducteur = "Fournisseur Vin blanc",
+                            Pays = "France",
+                            Region = "Normandie",
+                            Reputation = "Excellent",
+                            Rue = "12 rue des chameaux",
+                            Tel = "+33678407516",
+                            Ville = "Paris"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Adresse = "11 rue des saloumé",
+                            DateCreation = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9507),
+                            DateModification = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9570),
+                            Email = "fournisseur2@negosud.com",
+                            Fix = "+3324515475",
+                            FournisseurId = 2,
+                            NomProducteur = "Fournisseur Vin Rouge",
+                            Pays = "France",
+                            Region = "Normandie",
+                            Reputation = "Excellent",
+                            Rue = "12 rue des chameaux",
+                            Tel = "+33678407516",
+                            Ville = "Marsaille"
+                        });
                 });
 
             modelBuilder.Entity("NegoSudAPI.Models.Produit", b =>
@@ -556,6 +847,60 @@ namespace NegoSudAPI.Migrations
                     b.HasIndex("ProducteurId");
 
                     b.ToTable("produits");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Alcool = 15.5f,
+                            Aliments = "très amer et acide",
+                            Ancien = "2015",
+                            CategorieId = 1,
+                            Conservation = "consummable jusqu'a 2029",
+                            Couleur = "Rouge Foncé",
+                            DateCreation = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9778),
+                            DateModification = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9784),
+                            Description = "that shit happens when the smart wenter faster minster faster",
+                            Expiration = "2029",
+                            ImagePrincipal = "https://www.vinatis.com/62341-thickbox_default/chateauneuf-du-pape-grand-vin-2018-chateau-de-nalys-e-guigal.png",
+                            NomProduit = "Fournisseur Vin blanc",
+                            Prixcarton = 15.4f,
+                            Prixunitaire = 5.3f,
+                            ProducteurId = 1,
+                            Raisins = "Frais récolté le jenvier 2022 à saint-loire",
+                            Region = "Normandie",
+                            Remise = 10.5f,
+                            Resumee = "smart here this gantis",
+                            SKU = "CDC5454",
+                            TVA = 5.14f,
+                            Volume = 4.3f
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Alcool = 15.5f,
+                            Aliments = "très amer et acide",
+                            Ancien = "2015",
+                            CategorieId = 1,
+                            Conservation = "consummable jusqu'a 2029",
+                            Couleur = "Rouge Foncé",
+                            DateCreation = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9812),
+                            DateModification = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(9816),
+                            Description = "that shit happens when the smart wenter faster minster faster",
+                            Expiration = "2029",
+                            ImagePrincipal = "https://www.vinatis.com/62341-thickbox_default/chateauneuf-du-pape-grand-vin-2018-chateau-de-nalys-e-guigal.png",
+                            NomProduit = "Fournisseur Vin blanc",
+                            Prixcarton = 15.4f,
+                            Prixunitaire = 5.3f,
+                            ProducteurId = 2,
+                            Raisins = "Frais récolté le jenvier 2022 à saint-loire",
+                            Region = "Normandie",
+                            Remise = 10.5f,
+                            Resumee = "smart here this gantis",
+                            SKU = "CDC5454",
+                            TVA = 5.14f,
+                            Volume = 4.3f
+                        });
                 });
 
             modelBuilder.Entity("NegoSudAPI.Models.Region", b =>
@@ -575,6 +920,32 @@ namespace NegoSudAPI.Migrations
                     b.HasIndex("PaysId");
 
                     b.ToTable("regions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            NameRegion = "Normandie",
+                            PaysId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            NameRegion = "Caen",
+                            PaysId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            NameRegion = "Lour",
+                            PaysId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            NameRegion = "Paris",
+                            PaysId = 4
+                        });
                 });
 
             modelBuilder.Entity("NegoSudAPI.Models.Utilisateur", b =>
@@ -619,6 +990,36 @@ namespace NegoSudAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("utilisateurs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DateInscription = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(8127),
+                            DateModification = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(8227),
+                            Email = "ismail.mouyahada@viacesi.fr",
+                            IsBusiness = false,
+                            MotDePasse = "TzxBcqT+MIzryEDaZlFx9TSEmx/KEB6vY11o+0Uzk9s=",
+                            Nom = "Nos",
+                            Prenom = "",
+                            Role = 1,
+                            SIREN = "515DE1454D56E46",
+                            Tel = "+3374075061"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DateInscription = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(8302),
+                            DateModification = new DateTime(2023, 2, 9, 2, 37, 25, 831, DateTimeKind.Local).AddTicks(8312),
+                            Email = "ismail.mouyahada@viacesi.fr",
+                            IsBusiness = false,
+                            MotDePasse = "TzxBcqT+MIzryEDaZlFx9TSEmx/KEB6vY11o+0Uzk9s=",
+                            Nom = "Nos",
+                            Prenom = "",
+                            Role = 1,
+                            SIREN = "DE561D5E156564",
+                            Tel = "+3374075061"
+                        });
                 });
 
             modelBuilder.Entity("NegoSudAPI.Models.Ville", b =>
@@ -638,6 +1039,32 @@ namespace NegoSudAPI.Migrations
                     b.HasIndex("RegionId");
 
                     b.ToTable("villes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            NameVille = "Paris",
+                            RegionId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            NameVille = "Madrid",
+                            RegionId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            NameVille = "Rome",
+                            RegionId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            NameVille = "Paris",
+                            RegionId = 4
+                        });
                 });
 
             modelBuilder.Entity("NegoSudAPI.Models.Adresse", b =>

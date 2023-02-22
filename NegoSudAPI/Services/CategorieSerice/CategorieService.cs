@@ -2,10 +2,11 @@
 using NegoSudAPI.Data;
 using NegoSudAPI.Models;
 using Microsoft.EntityFrameworkCore;
- 
+
 
 namespace NegoSudAPI.Services.CategorieService
-{ public class CategorieService : ICategorieService
+{
+    public class CategorieService : ICategorieService
     {
         private readonly NegosudDbContext _context;
 
@@ -16,11 +17,11 @@ namespace NegoSudAPI.Services.CategorieService
 
         public async Task<List<Categorie>> AjouterCategorie(Categorie categorie)
         {
-             if (_context.categories == null)
+            if (_context.categories == null)
             {
                 throw new ArgumentNullException(nameof(_context.categories), "tout est vide.");
             }
-              _context.categories.Add(categorie);
+            _context.categories.Add(categorie);
             await _context.SaveChangesAsync();
             return await _context.categories.ToListAsync();
         }
@@ -40,13 +41,13 @@ namespace NegoSudAPI.Services.CategorieService
             return await _context.categories.ToListAsync();
         }
 
-        public   Task<List<Categorie>> RecupererToutCategories()
+        public Task<List<Categorie>> RecupererToutCategories()
         {
             if (_context.categories == null)
             {
                 throw new ArgumentNullException(nameof(_context.categories), "tout est vide.");
             }
-            var categories =   _context.categories.ToListAsync();
+            var categories = _context.categories.ToListAsync();
             return categories;
         }
 
@@ -72,15 +73,15 @@ namespace NegoSudAPI.Services.CategorieService
             var categorie = await _context.categories.FindAsync(id);
             if (categorie is null)
                 return null;
-
-            categorie  = request ;
             
-
+            categorie.NameCategorie = request.NameCategorie;
+        
             await _context.SaveChangesAsync();
-
+            // return categorie as List<Categorie>
             return await _context.categories.ToListAsync();
+
         }
 
-        
+
     }
 }

@@ -47,7 +47,7 @@ namespace NegoSudAPI.Controllers
             var user = _utilisateurService.RecupererToutUtilisateurs().Result.FirstOrDefault(u => u.Email == utilisateur.Email && u.MotDePasse == new PasswordHash().HashedPass(utilisateur.MotDePasse));
             if (user == null)
             {
-                return Unauthorized("Des identifiants invalides ou introuvable");
+                return Unauthorized("{'message':'Des identifiants invalides ou introuvable'}");
             }
 
             // Create token

@@ -73,7 +73,7 @@ namespace NegoSudAPI.Services.PaysService
             if (pays is null)
                 return null;
 
-            pays  = request ;
+            pays.NamePays  = request.NamePays ;
             
 
             await _context.SaveChangesAsync();

@@ -73,7 +73,17 @@ namespace NegoSudAPI.Services.MagasinService
             if (magasin is null)
                 return null;
 
-            magasin  = request ;
+            magasin.Adresse  = request.Adresse ;
+            magasin.CodePostal = request.CodePostal;
+            magasin.Email = request.Email;
+            magasin.NomMagasin = request.NomMagasin;
+            magasin.Tel = request.Tel;
+            magasin.Fix = request.Fix;
+            magasin.DateModification = request.DateModification;
+            magasin.Pays = request.Pays;
+            magasin.ProducteurId = request.ProducteurId;
+          
+        
             
 
             await _context.SaveChangesAsync();

@@ -73,8 +73,11 @@ namespace NegoSudAPI.Services.FactureService
             if (facture is null)
                 return null;
 
-            facture  = request ;
-            
+            facture.CommandeId = request.CommandeId;
+            facture.DateModification = request.DateModification;
+            facture.FactureTotal = request.FactureTotal;
+            facture.Reference = request.Reference;
+            facture.DateModification = DateTime.Now;
 
             await _context.SaveChangesAsync();
 

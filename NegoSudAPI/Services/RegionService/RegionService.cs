@@ -73,7 +73,8 @@ namespace NegoSudAPI.Services.RegionService
             if (region is null)
                 return null;
 
-            region  = request ;
+            region.NameRegion = request.NameRegion;
+            region.PaysId = request.PaysId;
             
 
             await _context.SaveChangesAsync();

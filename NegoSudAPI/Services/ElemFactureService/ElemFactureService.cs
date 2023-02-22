@@ -73,7 +73,9 @@ namespace NegoSudAPI.Services.ElemFactureService
             if (elemfacture is null)
                 return null;
 
-            elemfacture  = request ;
+            elemfacture.FactureId = request.FactureId;
+            elemfacture.DateModification = DateTime.Now;
+            elemfacture.Produits = request.Produits;
             
 
             await _context.SaveChangesAsync();

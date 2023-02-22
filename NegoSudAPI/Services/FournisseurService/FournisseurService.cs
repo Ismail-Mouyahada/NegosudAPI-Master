@@ -2,10 +2,11 @@
 using NegoSudAPI.Data;
 using NegoSudAPI.Models;
 using Microsoft.EntityFrameworkCore;
- 
+
 
 namespace NegoSudAPI.Services.FournisseurService
-{ public class FournisseurService : IFournisseurService
+{
+    public class FournisseurService : IFournisseurService
     {
         private readonly NegosudDbContext _context;
 
@@ -16,11 +17,11 @@ namespace NegoSudAPI.Services.FournisseurService
 
         public async Task<List<Fournisseur>> AjouterFournisseur(Fournisseur fournisseur)
         {
-             if (_context.fournisseurs == null)
+            if (_context.fournisseurs == null)
             {
                 throw new ArgumentNullException(nameof(_context.fournisseurs), "tout est vide.");
             }
-              _context.fournisseurs.Add(fournisseur);
+            _context.fournisseurs.Add(fournisseur);
             await _context.SaveChangesAsync();
             return await _context.fournisseurs.ToListAsync();
         }
@@ -40,13 +41,13 @@ namespace NegoSudAPI.Services.FournisseurService
             return await _context.fournisseurs.ToListAsync();
         }
 
-        public   Task<List<Fournisseur>> RecupererToutFournisseurs()
+        public Task<List<Fournisseur>> RecupererToutFournisseurs()
         {
             if (_context.fournisseurs == null)
             {
                 throw new ArgumentNullException(nameof(_context.fournisseurs), "tout est vide.");
             }
-            var fournisseurs =   _context.fournisseurs.ToListAsync();
+            var fournisseurs = _context.fournisseurs.ToListAsync();
             return fournisseurs;
         }
 
@@ -73,14 +74,28 @@ namespace NegoSudAPI.Services.FournisseurService
             if (fournisseur is null)
                 return null;
 
-            fournisseur  = request ;
-            
+            fournisseur.NomFournisseur = request.NomFournisseur;
+            fournisseur.Pays = request.Pays;
+            fournisseur.Adresse = request.Adresse;
+            fournisseur.Ville = request.Ville;
+            fournisseur.Email = request.Email;
+            fournisseur.Tel = request.Tel;
+            fournisseur.Fix = request.Fix;
+            fournisseur.Rue = request.Rue;
+            fournisseur.Reputation = request.Reputation;
+            fournisseur.DateModification = DateTime.Now;
+            fournisseur.Region = request.Region;
+
+
+
+
+
 
             await _context.SaveChangesAsync();
 
             return await _context.fournisseurs.ToListAsync();
         }
 
-        
+
     }
 }

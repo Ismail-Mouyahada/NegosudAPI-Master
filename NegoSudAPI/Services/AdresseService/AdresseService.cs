@@ -2,10 +2,11 @@
 using NegoSudAPI.Data;
 using NegoSudAPI.Models;
 using Microsoft.EntityFrameworkCore;
- 
+
 
 namespace NegoSudAPI.Services.AdresseService
-{ public class AdresseService : IAdresseService
+{
+    public class AdresseService : IAdresseService
     {
         private readonly NegosudDbContext _context;
 
@@ -16,11 +17,11 @@ namespace NegoSudAPI.Services.AdresseService
 
         public async Task<List<Adresse>> AjouterAdresse(Adresse adresse)
         {
-             if (_context.adresses == null)
+            if (_context.adresses == null)
             {
                 throw new ArgumentNullException(nameof(_context.adresses), "tout est vide.");
             }
-              _context.adresses.Add(adresse);
+            _context.adresses.Add(adresse);
             await _context.SaveChangesAsync();
             return await _context.adresses.ToListAsync();
         }
@@ -40,13 +41,13 @@ namespace NegoSudAPI.Services.AdresseService
             return await _context.adresses.ToListAsync();
         }
 
-        public   Task<List<Adresse>> RecupererToutAdresses()
+        public Task<List<Adresse>> RecupererToutAdresses()
         {
             if (_context.adresses == null)
             {
                 throw new ArgumentNullException(nameof(_context.adresses), "tout est vide.");
             }
-            var adresses =   _context.adresses.ToListAsync();
+            var adresses = _context.adresses.ToListAsync();
             return adresses;
         }
 
@@ -73,14 +74,23 @@ namespace NegoSudAPI.Services.AdresseService
             if (adresse is null)
                 return null;
 
-            adresse  = request ;
-            
+
+            adresse.Rue = request.Rue;
+            adresse.AdressePrincipal = request.AdressePrincipal;
+            adresse.AdresseComplet = request.AdresseComplet;
+            adresse.Ville = request.Ville;
+            adresse.CodePostal = request.CodePostal;
+            adresse.Region = request.Region;
+            adresse.Pays = request.Pays;
+            adresse.typeAdresse = request.typeAdresse;
+            adresse.DateModification = request.DateModification;
+            adresse.UtilisateurId = request.UtilisateurId;
 
             await _context.SaveChangesAsync();
 
             return await _context.adresses.ToListAsync();
         }
 
-        
+
     }
 }

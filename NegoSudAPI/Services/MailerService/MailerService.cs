@@ -73,7 +73,13 @@ namespace NegoSudAPI.Services.MailerService
             if (mailer is null)
                 return null;
 
-            mailer  = request ;
+            mailer.Corps = request.Corps;
+            mailer.Sujet = request.Sujet;
+            mailer.EnvoyePar = request.EnvoyePar;
+            mailer.DateInscription = request.DateInscription;
+            mailer.receptionneur = request.receptionneur;
+        
+
             
 
             await _context.SaveChangesAsync();

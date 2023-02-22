@@ -73,7 +73,25 @@ namespace NegoSudAPI.Services.ProduitService
             if (produit is null)
                 return null;
 
-            produit  = request ;
+            produit.Alcool = request.Alcool;
+            produit.Description = request.Description;
+            produit.Aliments = request.Aliments;
+            produit.Prix_carton = request.Prix_carton;
+            produit.Prix_unitaire = request.Prix_unitaire;
+            produit.CategorieId = request.CategorieId;
+            produit.Conservation = request.Conservation;
+            produit.Couleur = request.Couleur;
+            produit.ProducteurId = request.ProducteurId;
+            produit.Producteur = request.Producteur;
+            produit.Raisins = request.Raisins;
+            produit.Remise = request.Remise;
+            produit.Resumee = request.Resumee;
+            produit.Volume = request.Volume;
+            produit.CategorieId = request.CategorieId;
+            produit.TVA = request.TVA;
+            produit.ImagePrincipal = request.ImagePrincipal;
+            produit.CategorieId = request.CategorieId;
+            produit.DateModification = DateTime.Now;
             
 
             await _context.SaveChangesAsync();

@@ -73,8 +73,15 @@ namespace NegoSudAPI.Services.InventaireService
             if (inventaire is null)
                 return null;
 
-            inventaire  = request ;
-            
+            inventaire.Appelation = request.Appelation;
+            inventaire.Classement = request.Classement;
+            inventaire.Couleur = request.Couleur;
+            inventaire.DateModification = request.DateModification;
+            inventaire.QuantiteStock = request.QuantiteStock;
+            inventaire.Position = request.Position;
+            inventaire.MagasinId = request.MagasinId;
+            inventaire.Millesime   = request.Millesime;
+            inventaire.Nom = request.Nom;
 
             await _context.SaveChangesAsync();
 

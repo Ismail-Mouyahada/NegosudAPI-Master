@@ -73,9 +73,12 @@ namespace NegoSudAPI.Services.CommandeService
             if (commande is null)
                 return null;
 
-            commande  = request ;
-            
-
+            commande.DateCommande = request.DateCommande;
+            commande.DateModification = DateTime.Now;
+            commande.UtilisateurId = request.UtilisateurId;
+            commande.Statut = request.Statut;
+            commande.Remise = request.Remise;
+             
             await _context.SaveChangesAsync();
 
             return await _context.commandes.ToListAsync();

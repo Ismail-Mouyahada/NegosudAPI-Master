@@ -73,8 +73,13 @@ namespace NegoSudAPI.Services.ElemCommandeService
             if (elemcommande is null)
                 return null;
 
-            elemcommande  = request ;
-            
+            elemcommande.Alerte = request.Alerte;
+            elemcommande.CommandeId = request.CommandeId;
+            elemcommande.QuantiteCommande = request.QuantiteCommande;
+            elemcommande.Commande = request.Commande;
+            elemcommande.DateModification =  DateTime.Now;
+            elemcommande.TotalCommande = request.TotalCommande;
+            elemcommande.SeuilAlerte = request.SeuilAlerte;
 
             await _context.SaveChangesAsync();
 
