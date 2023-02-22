@@ -2,10 +2,11 @@
 using NegoSudAPI.Data;
 using NegoSudAPI.Models;
 using Microsoft.EntityFrameworkCore;
- 
+
 
 namespace NegoSudAPI.Services.ProducteurService
-{ public class ProducteurService : IProducteurService
+{
+    public class ProducteurService : IProducteurService
     {
         private readonly NegosudDbContext _context;
 
@@ -16,11 +17,11 @@ namespace NegoSudAPI.Services.ProducteurService
 
         public async Task<List<Producteur>> AjouterProducteur(Producteur producteur)
         {
-             if (_context.producteurs == null)
+            if (_context.producteurs == null)
             {
                 throw new ArgumentNullException(nameof(_context.producteurs), "tout est vide.");
             }
-              _context.producteurs.Add(producteur);
+            _context.producteurs.Add(producteur);
             await _context.SaveChangesAsync();
             return await _context.producteurs.ToListAsync();
         }
@@ -40,13 +41,13 @@ namespace NegoSudAPI.Services.ProducteurService
             return await _context.producteurs.ToListAsync();
         }
 
-        public   Task<List<Producteur>> RecupererToutProducteurs()
+        public Task<List<Producteur>> RecupererToutProducteurs()
         {
             if (_context.producteurs == null)
             {
                 throw new ArgumentNullException(nameof(_context.producteurs), "tout est vide.");
             }
-            var producteurs =   _context.producteurs.ToListAsync();
+            var producteurs = _context.producteurs.ToListAsync();
             return producteurs;
         }
 
@@ -73,14 +74,30 @@ namespace NegoSudAPI.Services.ProducteurService
             if (producteur is null)
                 return null;
 
-            producteur  = request ;
-            
+            producteur = request;
+
+            producteur.NomProducteur = request.NomProducteur;
+            producteur.RaisonSocial = request.RaisonSocial;
+            producteur.Nom = request.Nom;
+            producteur.Prenom = request.Prenom;
+            producteur.Tel = request.Tel;
+            producteur.Fix = request.Fix;
+            producteur.Email = request.Email;
+            producteur.Rue = request.Rue;
+            producteur.Adresse = request.Adresse;
+            producteur.Ville = request.Ville;
+            producteur.Region = request.Region;
+            producteur.Pays = request.Pays;
+            producteur.Reputation = request.Reputation;
+            producteur.DateModification = DateTime.Now;
+            producteur.FournisseurId = request.FournisseurId;
+
 
             await _context.SaveChangesAsync();
 
             return await _context.producteurs.ToListAsync();
         }
 
-        
+
     }
 }
