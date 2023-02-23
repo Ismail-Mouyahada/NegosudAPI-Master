@@ -3,9 +3,10 @@ using NegoSudAPI.Data;
 using NegoSudAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using NegoSudAPI.Auth;
- 
+
 namespace NegoSudAPI.Services.UtilisateurService
-{ public class UtilisateurService : IUtilisateurService
+{
+    public class UtilisateurService : IUtilisateurService
     {
         private readonly NegosudDbContext _context;
 
@@ -21,7 +22,7 @@ namespace NegoSudAPI.Services.UtilisateurService
                 throw new ArgumentNullException(nameof(_context.utilisateurs), "tout est vide.");
             }
             utilisateur.MotDePasse = new PasswordHash().HashedPass(utilisateur.MotDePasse);
- 
+
 
             _context.utilisateurs.Add(utilisateur);
             await _context.SaveChangesAsync();
@@ -42,13 +43,13 @@ namespace NegoSudAPI.Services.UtilisateurService
 
             return await _context.utilisateurs.ToListAsync();
         }
-         public   Task<List<Utilisateur>> RecupererToutUtilisateurs()
+        public Task<List<Utilisateur>> RecupererToutUtilisateurs()
         {
             if (_context.utilisateurs == null)
             {
                 throw new ArgumentNullException(nameof(_context.utilisateurs), "tout est vide.");
             }
-            var utilisateurs =   _context.utilisateurs.ToListAsync();
+            var utilisateurs = _context.utilisateurs.ToListAsync();
             return utilisateurs;
         }
 
@@ -75,21 +76,26 @@ namespace NegoSudAPI.Services.UtilisateurService
             if (utilisateur is null)
                 return null;
 
-            utilisateur.NomUtilisateur  = request.NomUtilisateur ;
-            utilisateur.Email           = request.Email ;
-            utilisateur.MotDePasse      = request.MotDePasse ;
-            utilisateur.Prenom          = request.Prenom ;
-            utilisateur.Nom             = request.Nom ;
-            utilisateur.Prenom          = request.Prenom ;
-            utilisateur.SIREN           = request.SIREN ;
-            utilisateur.Role            = request.Role ;
-            utilisateur.Tel             = request.Tel ;
+            utilisateur.NomUtilisateur = request.NomUtilisateur;
+            utilisateur.Email = request.Email;
+            utilisateur.Prenom = request.Prenom;
+            utilisateur.Nom = request.Nom;
+            if (request.MotDePasse != null)
+            {
+                utilisateur.MotDePasse = new PasswordHash().HashedPass(request.MotDePasse);
+                
+            }
+            utilisateur.IsBusiness = request.IsBusiness;
+            utilisateur.SIREN = request.SIREN;
+            utilisateur.Role = request.Role;
+            utilisateur.Tel = request.Tel;
+            utilisateur.DateModification = DateTime.Now;
 
             await _context.SaveChangesAsync();
 
             return await _context.utilisateurs.ToListAsync();
         }
 
-      
+
     }
 }
