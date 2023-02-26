@@ -9,7 +9,7 @@ API devloped by Ismail Mouyahada for educational purposes.
 link to the API : http://195.154.113.18:8000/swagger/index.html
 
 #Introduction
-This API was made to assimilate the needs of Negosud Company. It handels all the HTTP requests made back and forward between the website and WPF client, however let me put in details some technical prerequisits to un this Api.
+This API was made to assimilate the needs of Negosud Company. It handels all the HTTP requests made back and forward between the website and WPF client, however let me put in details some technical prerequisits for this REST API.
 
   # Prequisits 
       - ASP.net core 7
