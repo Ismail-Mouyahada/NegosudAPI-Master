@@ -2,153 +2,60 @@
 
  ![logo-negosud](https://user-images.githubusercontent.com/66369128/220627476-59a06d7c-398f-4a77-80b8-3e9ad7555c9a.png)
 
-Full Documentation : https://github.com/Ismail-Mouyahada/NegosudAPI-Master/wiki
+Documentation complete de l'API : [https://github.com/Ismail-Mouyahada/NegosudAPI-Master/wiki](https://unexpected-salt-c05.notion.site/Documentation-de-l-API-Negosud-ASP-net-Core-7-45857da0a78a40adb691b77005d5fe18)
 # Negosud REST API 
 API devloped by Ismail Mouyahada for educational purposes.
 
 link to the API : http://195.154.113.18:8000/swagger/index.html
 
-#Introduction
-This API was made to assimilate the needs of Negosud Company. It handels all the HTTP requests made back and forward between the website and WPF client, however let me put in details some technical prerequisits for this REST API.
+# Installation des dépendances et déploiement de l'API Negosud
 
-  # Prequisits 
-      - ASP.net core 7
-      - DataBase 8.0.01 Mariadb-sever
-      - dotnet ef 
-    
-    + Links
-      - Installing ASP.net core 7 : https://learn.microsoft.com/fr-fr/dotnet/core/install/linux?WT.mc_id=dotnet-35129-website
-      - Installing Mariadb : https://dev.mysql.com/doc/refman/8.0/en/linux-installation.html
-      - Installing dotnet ef : https://learn.microsoft.com/en-us/ef/core/cli/dotnet
-   
-   
-  # Getting started
-   
-      // to install all the independancies
-      dotnet build
-      
-      // to run the project
-      dotnet run 
-   
-   # Database Configuration (before runing the migrations)
-   
-     // runing the migrations
-    dotnet ef migration add NameOfTheMigration
+Pour installer les dépendances de l'API Negosud créée en [ASP.NET](http://asp.net/) Core, vous devez tout d'abord vous assurer d'avoir installé .NET Core SDK sur votre machine. Vous pouvez le télécharger à partir du site officiel de Microsoft.
 
-    //submetting changes to the database
-    dotnet ef database update
+Une fois que .NET Core SDK est installé, vous pouvez ouvrir un terminal ou une invite de commande et exécuter la commande suivante pour installer les dépendances :
 
-   # Architecture
-   
-   
-       .
-    ├── appsettings.Development.json
-    ├── appsettings.json
+```
+dotnet restore
 
-    # Authentication Controller
+```
 
-    ├── Auth
-    │   ├── AuthController.cs
-    │   ├── PasswordHash.cs
-    │   └── RegisterController.cs
+Cette commande téléchargera toutes les dépendances du projet et les installera sur votre machine.
 
-    # Models Controllers 
+Ensuite, vous devrez procéder aux migrations de base de données en utilisant la commande suivante :
 
-    ├── Controllers
-    │   ├── AdressesController.cs
-    │   ├── CataloguesController.cs
-    │   ├── CategoriesController.cs
-    │   ├── CommandesController.cs
-    │   ├── ElemCommandesController.cs
-    │   ├── ElemFacturesController.cs
-    │   ├── FacturesController.cs
-    │   ├── FournisseursController.cs
-    │   ├── InventairesController.cs
-    │   ├── MagasinsController.cs
-    │   ├── PayssController.cs
-    │   ├── ProducteursController.cs
-    │   ├── ProduitsController.cs
-    │   ├── RegionsController.cs
-    │   ├── SendMailController.cs
-    │   ├── UtilisateursController.cs
-    │   └── VillesController.cs
+```
+dotnet ef database update
 
-    # Data Context
+```
 
-    ├── Data
-    │   └── NegosudDbContext.cs
+Cette commande créera la base de données pour votre API et mettra à jour le schéma de la base de données.
 
-    # Mail Controller and samples
-    ├── Mail
-    │   ├── MailSamples
-    │   └── SendMail.cs
+Enfin, pour déployer votre API Negosud, vous pouvez utiliser une plateforme de déploiement en ligne telle que Azure ou AWS. Vous pouvez également déployer l'API sur un serveur dédié en suivant les instructions de déploiement [ASP.NET](http://asp.net/) Core.
 
-    # Megrations 
+En suivant ces étapes, vous serez en mesure d'installer les dépendances de l'API, effectuer les migrations de base de données et déployer l'API Negosud créée en [ASP.NET](http://asp.net/) Core.
 
-    ├── Migrations
-    │   ├── 20230201222111_initialmig.cs
-    │   ├── 20230201222111_initialmig.Designer.cs
-    │   ├── 20230207213228_start.cs
-    │   ├── 20230207213228_start.Designer.cs
-    │   └── NegosudDbContextModelSnapshot.cs
+Si vous souhaitez déployer votre API sur un serveur dédié, vous pouvez suivre les étapes suivantes :
 
-    # Models
+1. Compilez le projet en utilisant la commande suivante :
 
-    ├── Models
-    │   ├── Adresse.cs
-    │   ├── Catalogue.cs
-    │   ├── Categorie.cs
-    │   ├── Commande.cs
-    │   ├── ConnexionAuth.cs
-    │   ├── ElemCommande.cs
-    │   ├── ElemFacture.cs
-    │   ├── Facture.cs
-    │   ├── Fournisseur.cs
-    │   ├── Inventaire.cs
-    │   ├── Magasin.cs
-    │   ├── Mailer.cs
-    │   ├── Pays.cs
-    │   ├── Producteur.cs
-    │   ├── Produit.cs
-    │   ├── Region.cs
-    │   ├── UtilisateurAuth.cs
-    │   ├── Utilisateur.cs
-    │   └── Ville.cs
+```
+dotnet publish -c Release
 
-    # Start up main class
-    ├── Program.cs
-    ├── Properties
-    │   └── launchSettings.json
+```
 
+Cette commande compilera le projet et créera une version optimisée pour la production dans le dossier `bin/Release/netcoreapp[version]/publish`.
 
-    # Services
+1. Transférez les fichiers de l'API sur le serveur en utilisant un outil de transfert de fichiers tel que FileZilla.
+2. Installez .NET Core Runtime sur le serveur si ce n'est pas déjà fait. Vous pouvez le télécharger à partir du site officiel de Microsoft.
+3. Exécutez l'application en utilisant la commande suivante :
 
-    ├── Services
-    │   ├── AdresseService
-    │   ├── CatalogueService
-    │   ├── CategorieSerice
-    │   ├── CommandeService
-    │   ├── ElemCommandeService
-    │   ├── ElemFactureService
-    │   ├── FactureService
-    │   ├── FournisseurService
-    │   ├── InventaireService
-    │   ├── MagasinService
-    │   ├── MailerService
-    │   ├── PaysService
-    │   ├── ProducteurService
-    │   ├── ProduitService
-    │   ├── RegionService
-    │   ├── UtilisateurService
-    │   └── VilleService
-    
-    # Testing
-    ├── TEST
-    │   └── dist
-    
-    # Files storages
-    
-    └── wwwroot
-        └── uploads
+```
+dotnet [nom de l'API].dll
 
-   
+```
+
+Remplacez `[nom de l'API]` par le nom de votre application.
+
+En suivant ces étapes, vous pourrez déployer votre API Negosud sur un serveur dédié.
+
+N'hésitez pas à me faire part de vos commentaires ou de vos questions si vous avez besoin d'aide supplémentaire.
