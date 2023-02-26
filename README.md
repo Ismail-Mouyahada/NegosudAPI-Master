@@ -2,7 +2,9 @@
 
  ![logo-negosud](https://user-images.githubusercontent.com/66369128/220627476-59a06d7c-398f-4a77-80b8-3e9ad7555c9a.png)
 
-Documentation complete de l'API : [https://github.com/Ismail-Mouyahada/NegosudAPI-Master/wiki](https://unexpected-salt-c05.notion.site/Documentation-de-l-API-Negosud-ASP-net-Core-7-45857da0a78a40adb691b77005d5fe18)
+- Modelisation conceptuelle de données (MCD) :  [MCD-negosud-cube](https://drawsql.app/teams/access-energies/diagrams/negosuddb)
+
+- Documentation complete de l'API : [Documentation-complet-api-negosud-cube](https://unexpected-salt-c05.notion.site/Documentation-de-l-API-Negosud-ASP-net-Core-7-45857da0a78a40adb691b77005d5fe18)
 # Negosud REST API 
 API devloped by Ismail Mouyahada for educational purposes.
 
