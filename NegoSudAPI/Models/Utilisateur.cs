@@ -14,7 +14,7 @@ namespace NegoSudAPI.Models
         public string? Email { get; set;}
         public string? Tel { get; set; }
         public string? MotDePasse { get; set; }
-        public int? Role  { get; set; }
+        public int? Role  { get; set; } = 0;
         public bool? IsBusiness { get; set;}
         public string? SIREN  { get; set; }
         // public string? tokenRefesh { get; set;}

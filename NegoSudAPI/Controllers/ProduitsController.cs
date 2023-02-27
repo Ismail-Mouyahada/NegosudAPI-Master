@@ -50,10 +50,10 @@ namespace NegoSudAPI.Controllers
         // PUT: api/Produits/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}"),Authorize]
-        public async Task<IActionResult> ModifierProduit(int id, Produit produit )
+        public async Task<IActionResult> ModifierProduit(int id, Produit produit, IFormFile Image )
         {
 
-             var result = await _produitService.ModifierProduit(id, produit);
+             var result = await _produitService.ModifierProduit(id, produit, Image);
             if (result is null)
                 return NotFound("Produit introuvable");
             return Ok(result);
@@ -64,9 +64,9 @@ namespace NegoSudAPI.Controllers
         // POST: api/Produits
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost,Authorize]
-        public async Task<ActionResult<Produit>> AjouterProduit(Produit produit)
+        public async Task<ActionResult<Produit>> AjouterProduit(Produit produit, IFormFile Image)
         {
-            var result = await _produitService.AjouterProduit(produit);
+            var result = await _produitService.AjouterProduit(produit, Image);
             if (result is null)
                 return NotFound("Produit introuvable");
             return Ok(result);

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using NegoSudAPI.Models;
 using NegoSudAPI.Services.UtilisateurService;
 
+
 namespace NegoSudAPI.Auth
 {
     [ApiController]
@@ -21,7 +22,7 @@ namespace NegoSudAPI.Auth
             _configuration = configuration;
 
         }
-        [EnableCors]
+ 
         [HttpPost]
         public IActionResult Inscription(Utilisateur utilisateur)
         {
@@ -30,17 +31,19 @@ namespace NegoSudAPI.Auth
             {
                 return BadRequest();
             }
+            utilisateur.MotDePasse = new PasswordHash().HashedPass(utilisateur.MotDePasse);
+            utilisateur.Role = 0;
 
-            var result = _utilisateurService.AjouterUtilisateur(utilisateur);
-            if (result is null)
-                return NotFound("Utilisateur introuvable");
+            _utilisateurService.AjouterUtilisateur(utilisateur);
+       
+
 
             return Ok(new
             {
                 Message = "Utilisateur a été ajouté avec succès ! ",
                 Email = utilisateur.Email,
                 MotDePasse = utilisateur.MotDePasse,
-                Role = utilisateur.Role
+                Role = 0,
 
             });
         }

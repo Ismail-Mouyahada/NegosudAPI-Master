@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -81,12 +82,15 @@ internal class Program
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,
-                Description = "Insert JWT Token",
+                Description = "Ajouter le token d'authentification ici  ",
                 Name = "Authorization",
                 Type = SecuritySchemeType.Http,
                 BearerFormat = "JWT",
                 Scheme = "Bearer"
             });
+            
+
+
         });
         // Authentification with JWT
         builder.Services.AddAuthentication(options =>
@@ -137,6 +141,6 @@ internal class Program
         app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
         //app.MapAdresseEndpoints();
 
-        app.Run("http://localhost:8000"); // To Set up for  real project
+        app.Run("http://localhost:8080"); // To Set up for  real project
     }
 }

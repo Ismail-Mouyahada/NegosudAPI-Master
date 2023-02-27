@@ -15,12 +15,24 @@ namespace NegoSudAPI.Services.ProduitService
             _context = context;
         }
 
-        public async Task<List<Produit>> AjouterProduit(Produit produit)
+        public async Task<List<Produit>> AjouterProduit(Produit produit, IFormFile image)
         {
             if (_context.produits == null)
             {
                 throw new ArgumentNullException(nameof(_context.utilisateurs), "tout est vide.");
             }
+
+            if (image != null && image.Length > 0)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    await image.CopyToAsync(ms);
+                    produit.ImagePrincipal = ms.ToString();
+                }
+            }
+
+
+
             _context.produits.Add(produit);
             await _context.SaveChangesAsync();
             return await _context.produits.ToListAsync();
@@ -64,7 +76,7 @@ namespace NegoSudAPI.Services.ProduitService
             return produit;
         }
 
-        public async Task<List<Produit>?> ModifierProduit(int id, Produit request)
+        public async Task<List<Produit>?> ModifierProduit(int id, Produit request, IFormFile image)
         {
             if (_context.produits == null)
             {
@@ -90,12 +102,22 @@ namespace NegoSudAPI.Services.ProduitService
             produit.Region = request.Region;
             produit.TVA = request.TVA;
             produit.Expiration = request.Expiration;
-            produit.ImagePrincipal = request.ImagePrincipal;
             produit.CategorieId = request.CategorieId;
             produit.ProducteurId = request.ProducteurId;
             produit.DateModification = DateTime.Now;
+            produit.DateCreation = DateTime.Now;
 
-            
+            if (image != null && image.Length > 0)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    await image.CopyToAsync(ms);
+                    produit.ImagePrincipal = ms.ToString();
+                }
+            }
+
+
+
             await _context.SaveChangesAsync();
 
             return await _context.produits.ToListAsync();

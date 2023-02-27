@@ -17,6 +17,7 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "7.0.3",
           "Pomelo.EntityFrameworkCore.MySql": "7.0.0",
           "Swashbuckle.AspNetCore": "6.5.0",
+          "Swashbuckle.AspNetCore.SwaggerUI": "6.5.0",
           "xunit": "2.4.2"
         },
         "runtime": {

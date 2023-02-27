@@ -47,7 +47,7 @@ namespace NegoSudAPI.Controllers
             var user = _utilisateurService.RecupererToutUtilisateurs().Result.FirstOrDefault(u => u.Email == utilisateur.Email && u.MotDePasse == new PasswordHash().HashedPass(utilisateur.MotDePasse));
             if (user == null)
             {
-                return Unauthorized("{'message':'Des identifiants invalides ou introuvable'}");
+                return Unauthorized(new { message = "Déoslé les identifiants invalides ou introuvable"});
             }
 
             // Create token
@@ -69,15 +69,15 @@ namespace NegoSudAPI.Controllers
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Today.AddDays(7),
+                expires: DateTime.Today.AddDays(2),
                 signingCredentials: signingCredentials
                 );
             return Ok(new
             {
                 Access_Token = new JwtSecurityTokenHandler().WriteToken(token),
-                Date_Expiration = DateTime.Now.AddDays(7),
+                Date_Expiration = DateTime.Now.AddDays(2),
                 Nom_uilisateur = utilisateur.Email,
-                Mot_De_passe = new PasswordHash().HashedPass(utilisateur.MotDePasse),
+                role = user.Role,
             });
         }
 

@@ -22,10 +22,11 @@ namespace NegoSudAPI.Services.UtilisateurService
                 throw new ArgumentNullException(nameof(_context.utilisateurs), "tout est vide.");
             }
             utilisateur.MotDePasse = new PasswordHash().HashedPass(utilisateur.MotDePasse);
+            utilisateur.Role = 0;
 
-
-            _context.utilisateurs.Add(utilisateur);
+             _context.utilisateurs.Add(utilisateur);
             await _context.SaveChangesAsync();
+            
             return await _context.utilisateurs.ToListAsync();
         }
         public async Task<List<Utilisateur>?> SupprimerUtilisateur(int id)
@@ -68,7 +69,7 @@ namespace NegoSudAPI.Services.UtilisateurService
 
         public async Task<List<Utilisateur>?> ModifierUtilisateur(int id, Utilisateur request)
         {
-            if (_context.utilisateurs == null)
+            if (_context.utilisateurs == null) 
             {
                 throw new ArgumentNullException(nameof(_context.utilisateurs), "tout est vide.");
             }
@@ -76,14 +77,16 @@ namespace NegoSudAPI.Services.UtilisateurService
             if (utilisateur is null)
                 return null;
 
+            utilisateur.Id =  utilisateur.Id  ;
             utilisateur.NomUtilisateur = request.NomUtilisateur;
             utilisateur.Email = request.Email;
             utilisateur.Prenom = request.Prenom;
             utilisateur.Nom = request.Nom;
-            if (request.MotDePasse != null)
+            if (utilisateur.MotDePasse == new PasswordHash().HashedPass(request.MotDePasse))
             {
-                utilisateur.MotDePasse = new PasswordHash().HashedPass(request.MotDePasse);
-                
+              utilisateur.MotDePasse =  request.MotDePasse;
+            }else if(utilisateur.MotDePasse != new PasswordHash().HashedPass(request.MotDePasse) || request.MotDePasse == null ){
+                utilisateur.MotDePasse =new PasswordHash().HashedPass(request.MotDePasse);
             }
             utilisateur.IsBusiness = request.IsBusiness;
             utilisateur.SIREN = request.SIREN;

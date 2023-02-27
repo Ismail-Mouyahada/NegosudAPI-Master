@@ -74,8 +74,6 @@ namespace NegoSudAPI.Services.ProducteurService
             if (producteur is null)
                 return null;
 
-            producteur = request;
-
             producteur.NomProducteur = request.NomProducteur;
             producteur.RaisonSocial = request.RaisonSocial;
             producteur.Nom = request.Nom;
@@ -89,10 +87,12 @@ namespace NegoSudAPI.Services.ProducteurService
             producteur.Region = request.Region;
             producteur.Pays = request.Pays;
             producteur.Reputation = request.Reputation;
+            producteur.DateCreation = DateTime.Now;
             producteur.DateModification = DateTime.Now;
             producteur.FournisseurId = request.FournisseurId;
+            producteur.Fournisseur = request.Fournisseur;
 
-
+ 
             await _context.SaveChangesAsync();
 
             return await _context.producteurs.ToListAsync();
