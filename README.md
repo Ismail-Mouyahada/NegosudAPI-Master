@@ -1,3 +1,9 @@
+![uml](https://user-images.githubusercontent.com/66369128/221883351-493eeff3-65a6-4357-8f13-98f0599bff3e.jpeg)
+
+![uml1](https://user-images.githubusercontent.com/66369128/221883455-54e307c5-7837-4b35-bf01-2dad4edb2744.jpeg)
+
+![uml2](https://user-images.githubusercontent.com/66369128/221883553-11b266fd-dc35-4c1b-9eb6-ff23ed5e615d.jpeg)
+![negosud-2023-02-26](https://user-images.githubusercontent.com/66369128/221883631-e4ec3ac8-39e7-4777-a925-bfecf06e6713.png)
 
 
  ![logo-negosud](https://user-images.githubusercontent.com/66369128/220627476-59a06d7c-398f-4a77-80b8-3e9ad7555c9a.png)
